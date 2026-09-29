@@ -1,0 +1,78 @@
+<style type="text/css">
+
+/* ===== 20260929 추가 시작 : Cluster Nodes 스타일 그대로 적용 : MetricsNode와 동일한 화면 크기/스타일 ===== */
+.content{max-width:1800px!important;margin-left:auto!important;margin-right:auto!important}
+.gpu-search .top{display:flex;align-items:flex-end;justify-content:flex-start;gap:18px;flex-wrap:nowrap}
+.gpu-search .search-group{display:flex;flex-direction:column;justify-content:flex-end}
+.gpu-search .tit{height:22px;line-height:22px;margin:0 0 8px 0!important;font-size:12px;font-weight:600;color:#555;white-space:nowrap}
+.gpu-search .period{flex:0 0 465px;min-width:465px}
+.gpu-search .period .input_box{display:flex;flex-direction:row;align-items:center;width:100%!important;height:48px;gap:10px;margin:0!important}
+.gpu-search .period input{width:220px!important;height:48px!important;box-sizing:border-box}
+.gpu-search .field{min-width:120px;gap:5px}
+.gpu-search .field input{width:205px!important;height:38px!important;box-sizing:border-box}
+.gpu-search .btn_area{display:flex;align-items:center;gap:12px;flex:0 0 auto;width:auto!important;height:38px;padding:0!important;margin:0!important}
+.gpu-search .btn_area button{height:38px}
+.gpu-grid-shell{width:100%!important;margin:0 auto!important;box-sizing:border-box;overflow-x:auto}
+.gpu-key-link{color:#0066cc!important;text-decoration:underline!important;cursor:pointer}
+#gbox_gpuMetricsGrid{margin-left:auto!important;margin-right:auto!important}
+#gbox_gpuMetricsGrid .ui-jqgrid-htable th,#gbox_gpuMetricsGrid .ui-jqgrid-htable th div{text-align:center!important}
+#gpuMetricsPager{width:100%!important;min-height:58px!important;position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+#gpuMetricsPager .ui-pg-table{width:auto!important;margin:0 auto!important}
+#gpuMetricsPager .ui-pg-table>tbody>tr{display:flex!important;align-items:center!important;justify-content:center!important;width:auto!important;gap:8px!important}
+#gpuMetricsPager_left,#gpuMetricsPager_center,#gpuMetricsPager_right,#gpuMetricsPager td[id$="_left"],#gpuMetricsPager td[id$="_center"],#gpuMetricsPager td[id$="_right"]{position:static!important;left:auto!important;top:auto!important;right:auto!important;transform:none!important;float:none!important;width:auto!important;min-width:0!important;padding:0 3px!important;display:flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important}
+.gpu-detail .m_modal_container{width:980px!important;max-width:980px!important;min-width:980px!important;max-height:92vh!important;margin:auto!important}
+.gpu-detail .m_modal_body{max-height:calc(92vh - 70px);overflow-y:auto;box-sizing:border-box}
+.gpu-detail-summary{margin:0 0 14px 0;padding:13px 15px;border:1px solid #ddd;border-radius:4px;background:#fafafa;font-size:15px;color:#555}
+.gpu-detail-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.gpu-detail-table th,.gpu-detail-table td{border-bottom:1px solid #e4e4e4;padding:12px 14px;font-size:14px;vertical-align:middle;box-sizing:border-box}
+.gpu-detail-table th{width:190px;background:#f7f7fb;color:#64718a;font-weight:600;text-align:center}
+.gpu-detail-table td{background:#fff;color:#333;word-break:break-all;white-space:normal}
+/* ===== 20260929 추가 끝 : Cluster Nodes 스타일 그대로 적용 ===== */
+
+</style>
+<div class="container"><div class="content trace"><h2>AI Metrics GPU DCGMI Metric 조회</h2>
+<div class="trace_search gpu-search"><div class="top"><div class="search-group period"><p class="tit">조회기간</p><div class="input_box"><input class="m_input datepicker date time" id="rangeStart"><span>-</span><input class="m_input datepicker date time" id="rangeEnd"></div></div><div class="search-group field"><p class="tit">GPU UUID</p><input class="m_input" id="search1" onkeydown="if(event.keyCode===13)searchGpuMetrics();"></div><div class="search-group field"><p class="tit">GPU ID</p><input class="m_input" id="search2" onkeydown="if(event.keyCode===13)searchGpuMetrics();"></div><div class="btn_area"><button type="button" class="btn_red" style="border-radius:7px;width:62px" onclick="searchGpuMetrics();">검색</button></div></div></div>
+<div class="width1 grid_wrap textleft gpu-grid-shell"><table id="gpuMetricsGrid"></table><div id="gpuMetricsPager"></div></div></div></div>
+<div id="gpuDetailModal" class="m_modal gpu-detail"><div class="m_modal_container"><div class="m_modal_header"><h2 class="tit">GPU DCGMI Metric 상세조회</h2><p class="m_modal_close" onclick="closeDetail();"></p></div><div class="m_modal_body"><div id="gpuDetailSummary" style="margin-bottom:14px"></div><div id="gpuDetailList"></div><div class="modal_btn_area"><button class="modal_btn_gray" onclick="closeDetail();" type="button">닫기</button></div></div></div></div>
+<script>
+"use strict";
+// 20260916 추가: ax_metrics_gpu_dcgmi_metric 조회 페이지
+var gpuVars={baseUrl:"/api/aimetricsboard/gpu/dcgmi",grid:$("#gpuMetricsGrid")};
+$(function(){initDate();initGrid();searchGpuMetrics();$(window).on("resize",resizeGrid);});
+function initDate(){if(!$("#rangeStart").length)return;var e=new Date(),s=new Date();s.setHours(s.getHours()-1);util.datetimePicker($("#rangeStart"),s);util.datetimePicker($("#rangeEnd"),e);}
+function initGrid(){util.jqGrid(gpuVars.grid,{datatype:"local",rownumbers:true,rownumWidth:32,shrinkToFit:true,autowidth:true,colNames:["GPU UUID", "NVIDIA SMI ID", "SNAPSHOT TIME", "GPU ID", "GI ID", "CI ID", "ENTITY TYPE", "UUID", "DEVICE NAME", "DRIVER VERSION", "PERSISTENCE MODE", "SM CLOCK MHZ", "MEM CLOCK MHZ", "TEMPERATURE(℃)", "POWER USAGE(W)", "MEMORY USED(GB)", "MEMORY TOTAL(GB)", "GPU UTIL PERCENT", "GR ENGINE ACTIVE PERCENT", "SM ACTIVE PERCENT", "SM OCCUPANCY PERCENT", "DRAM ACTIVE PERCENT"],colModel:[{name:"gpuUuid",width:210,align:"center",formatter:function(v){if(!v)return "";return '<a class="gpu-key-link" onclick="viewDetail(\''+escapeJs(v)+'\')">'+$.jgrid.htmlEncode(v)+'</a>';}},{name:"nvidiaSmiId",width:125,align:"center",formatter:formatGpuId},{name:"snapshotTime",width:125,align:"center",formatter:formatGpuDateTime},{name:"gpuId",width:125,align:"center",formatter:formatGpuId},{name:"giId",width:125,align:"center",formatter:formatGpuId},{name:"ciId",width:125,align:"center",formatter:formatGpuId},{name:"entityType",width:125,align:"center"},{name:"uuid",width:210,align:"center",formatter:formatGpuId},{name:"deviceName",width:125,align:"center"},{name:"driverVersion",width:125,align:"center"},{name:"persistenceMode",width:125,align:"center",formatter:formatGpuInteger},{name:"smClockMhz",width:125,align:"center",formatter:formatGpuInteger},{name:"memClockMhz",width:125,align:"center",formatter:formatGpuInteger},{name:"temperatureC",width:125,align:"center",formatter:formatGpuTemp},{name:"powerUsageW",width:125,align:"center",formatter:formatGpuPower},{name:"memoryUsedMib",width:125,align:"center",formatter:formatGpuGbFromMib},{name:"memoryTotalMib",width:125,align:"center",formatter:formatGpuGbFromMib},{name:"gpuUtilPercent",width:125,align:"center"},{name:"grEngineActivePercent",width:125,align:"center"},{name:"smActivePercent",width:125,align:"center"},{name:"smOccupancyPercent",width:125,align:"center"},{name:"dramActivePercent",width:125,align:"center"}],rowNum:20,rowList:[20,50,100,200],pager:"#gpuMetricsPager"});}
+function searchGpuMetrics(){var u=gpuVars.baseUrl+"?size=200";if($("#rangeStart").length){var s=normalizeDate($("#rangeStart").val()),e=normalizeDate($("#rangeEnd").val());if(s)u+="&startTime="+encodeURIComponent(s);if(e)u+="&endTime="+encodeURIComponent(e);}var a=$.trim($("#search1").val()),b=$.trim($("#search2").val());if(a)u+="&search1="+encodeURIComponent(a);if(b)u+="&search2="+encodeURIComponent(b);$.get(u,function(d){gpuVars.grid.clearGridData().setGridParam({data:d.content||[],datatype:"local"}).trigger("reloadGrid");resizeGrid();}).fail(function(){alert("GPU Metrics 조회에 실패했습니다.");});}
+function resizeGrid(){var w=$(".gpu-grid-shell").width();if(w&&gpuVars.grid[0]&&gpuVars.grid[0].grid)gpuVars.grid.jqGrid("setGridWidth",w,false);}
+function viewDetail(k){$.get(gpuVars.baseUrl+"/detail?key="+encodeURIComponent(k),function(rows){$("#gpuDetailSummary").text("GPU UUID: "+k);renderDetail(rows||[]);$("#gpuDetailModal").addClass("on");$("body").css("overflow","hidden");}).fail(function(){alert("상세 조회에 실패했습니다.");});}
+function renderDetail(rows){var $x=$("#gpuDetailList").empty();if(!rows.length){$x.html('<div style="text-align:center;padding:35px">조회된 상세 데이터가 없습니다.</div>');return;}var r=rows[0],h='<table class="gpu-detail-table"><tbody>';// 20260916 추가: Thymeleaf가 JavaScript의 [[...]]를 인라인 표현식으로 해석하지 않도록 객체 배열로 변경
+var fields=[{field:"nvidiaSmiId",label:"NVIDIA SMI ID"}, {field:"snapshotTime",label:"SNAPSHOT TIME"}, {field:"gpuId",label:"GPU ID"}, {field:"giId",label:"GI ID"}, {field:"ciId",label:"CI ID"}, {field:"entityType",label:"ENTITY TYPE"}, {field:"uuid",label:"UUID"}, {field:"gpuUuid",label:"GPU UUID"}, {field:"migUuid",label:"MIG UUID"}, {field:"migInstanceId",label:"MIG INSTANCE ID"}, {field:"deviceName",label:"DEVICE NAME"}, {field:"driverVersion",label:"DRIVER VERSION"}, {field:"persistenceMode",label:"PERSISTENCE MODE"}, {field:"smClockMhz",label:"SM CLOCK MHZ"}, {field:"memClockMhz",label:"MEM CLOCK MHZ"}, {field:"temperatureC",label:"TEMPERATURE(℃)"}, {field:"powerUsageW",label:"POWER USAGE(W)"}, {field:"clockThrottleReasons",label:"CLOCK THROTTLE REASONS"}, {field:"memoryUsedMib",label:"MEMORY USED(GB)"}, {field:"memoryTotalMib",label:"MEMORY TOTAL(GB)"}, {field:"bar1UsedMib",label:"BAR1 USED(GB)"}, {field:"bar1TotalMib",label:"BAR1 TOTAL(GB)"}, {field:"gpuUtilPercent",label:"GPU UTIL PERCENT"}, {field:"memCopyUtilPercent",label:"MEM COPY UTIL PERCENT"}, {field:"grEngineActivePercent",label:"GR ENGINE ACTIVE PERCENT"}, {field:"smActivePercent",label:"SM ACTIVE PERCENT"}, {field:"smOccupancyPercent",label:"SM OCCUPANCY PERCENT"}, {field:"tensorCoreActivePercent",label:"TENSOR CORE ACTIVE PERCENT"}, {field:"dramActivePercent",label:"DRAM ACTIVE PERCENT"}, {field:"encUtilPercent",label:"ENC UTIL PERCENT"}, {field:"decUtilPercent",label:"DEC UTIL PERCENT"}, {field:"pcieBytesTransmitted",label:"PCIE BYTES TRANSMITTED"}, {field:"pcieBytesReceived",label:"PCIE BYTES RECEIVED"}, {field:"nvlinkBytesTransmitted",label:"NVLINK BYTES TRANSMITTED"}, {field:"nvlinkBytesReceived",label:"NVLINK BYTES RECEIVED"}, {field:"xidErrors",label:"XID ERRORS"}, {field:"eccSbeVolatileTotal",label:"ECC SBE VOLATILE TOTAL"}, {field:"eccDbeVolatileTotal",label:"ECC DBE VOLATILE TOTAL"}, {field:"eccSbeAggregateTotal",label:"ECC SBE AGGREGATE TOTAL"}, {field:"eccDbeAggregateTotal",label:"ECC DBE AGGREGATE TOTAL"}, {field:"gpuUtilSamples",label:"GPU UTIL SAMPLES"}, {field:"memUtilSamples",label:"MEM UTIL SAMPLES"}, {field:"createDt",label:"CREATE DT"}, {field:"updateDt",label:"UPDATE DT"}];for(var i=0;i<fields.length;i++){var field=fields[i].field,v=formatGpuDetailValue(field,r[field]);h+='<tr><th>'+$.jgrid.htmlEncode(fields[i].label)+'</th><td>'+$.jgrid.htmlEncode(gpuEmpty(v)?' - ':String(v))+'</td></tr>';}h+='</tbody></table>';$x.html(h);}
+// ===== 20260929 추가 시작 : MetricsNode 동일 표시 규칙(GB/단위/콤마/시간) =====
+function gpuEmpty(v){return v===null||v===undefined||v==="";}
+function formatGpuInteger(v){if(gpuEmpty(v))return "";var n=Number(v);if(!isFinite(n))return v;return Math.trunc(n).toLocaleString("en-US");}
+function formatGpuId(v){return gpuEmpty(v)?"":String(v);}
+function formatGpuGbFromMib(v){if(gpuEmpty(v))return "";var n=Number(v);if(!isFinite(n))return v;return (n/1024).toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})+" GB";}
+function formatGpuGbFromKib(v){if(gpuEmpty(v))return "";var n=Number(v);if(!isFinite(n))return v;return (n/1024/1024).toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})+" GB";}
+function formatGpuGbFromBytes(v){if(gpuEmpty(v))return "";var n=Number(v);if(!isFinite(n))return v;return (n/1024/1024/1024).toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})+" GB";}
+function formatGpuTemp(v){if(gpuEmpty(v))return "";var n=Number(v);return isFinite(n)?n.toLocaleString("en-US",{maximumFractionDigits:1})+" ℃":v;}
+function formatGpuPower(v){if(gpuEmpty(v))return "";var n=Number(v);return isFinite(n)?n.toLocaleString("en-US",{maximumFractionDigits:1})+" W":v;}
+function formatGpuSeconds(v){if(gpuEmpty(v))return "";var n=Number(v);return isFinite(n)?Math.trunc(n).toLocaleString("en-US")+" 초":v;}
+function formatGpuDateTime(v){if(gpuEmpty(v))return "";return String(v).replace("T"," ").replace(/(\.\d+)(?=$|Z|[+-]\d\d:?\d\d$)/,"").replace(/Z$/,"");}
+function formatGpuNumber(v){if(gpuEmpty(v))return "";var n=Number(v);return isFinite(n)?n.toLocaleString("en-US",{maximumFractionDigits:2}):v;}
+function formatGpuDetailValue(field,v){
+    if(gpuEmpty(v))return "";
+    if(["nvidiaSmiId","gpuId","giId","ciId","pid","migIndex","serverId","uuid","globalUuid","gpuUuid","migUuid","instanceId"].indexOf(field)>=0)return formatGpuId(v);
+    if(["snapshotTime","collectTime","createDt","updateDt","startTime"].indexOf(field)>=0)return formatGpuDateTime(v);
+    if(field==="temperatureC")return formatGpuTemp(v);
+    if(field==="powerUsageW"||field==="powerCapW")return formatGpuPower(v);
+    if(["memoryUsedMib","memoryTotalMib","bar1UsedMib","bar1TotalMib","gpuMemoryUsedMib","gpuMemoryTotalMib","physicalMemoryMib","virtualMemoryMib"].indexOf(field)>=0)return formatGpuGbFromMib(v);
+    if(field==="physicalMemoryKib"||field==="virtualMemoryKib")return formatGpuGbFromKib(v);
+    if(["pcieBytesTransmitted","pcieBytesReceived","nvlinkBytesTransmitted","nvlinkBytesReceived"].indexOf(field)>=0)return formatGpuGbFromBytes(v);
+    if(field==="elapsedTime"||field==="diffTime")return formatGpuSeconds(v);
+    if(typeof v==="number")return formatGpuNumber(v);
+    return v;
+}
+// ===== 20260929 추가 끝 =====
+function closeDetail(){$("#gpuDetailModal").removeClass("on");$("body").css("overflow","auto");}
+function escapeJs(v){return String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'");} // 20260929 추가 : Grid 초기화 중단 JS 오류 수정
+function normalizeDate(v){if(!v)return "";return String(v).replace("T"," ");}
+</script>

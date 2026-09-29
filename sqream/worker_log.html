@@ -1,0 +1,1359 @@
+<style type="text/css">
+    .content {
+        max-width: 1800px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .global-uuid-link { color:#0066cc !important;text-decoration:underline !important;cursor:pointer; }
+    #workerLogGrid td { white-space:nowrap; }
+    #workerLogPager .ui-pg-table { width:auto !important;margin:0 auto !important; }
+    .sqream-detail .m_modal_container {
+        width:980px !important;
+        max-width:980px !important;
+        min-width:980px !important;
+        max-height:92vh !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+    .sqream-detail .m_modal_body {
+        max-height:calc(92vh - 70px);
+        overflow-y:auto;
+        box-sizing:border-box;
+    }
+    .sqream-detail-summary {
+        margin:0 0 14px 0;
+        padding:13px 15px !important;
+        border:1px solid #ddd;
+        border-radius:4px;
+        background:#fafafa;
+        font-size:15px !important;
+        color:#555;
+    }
+    .sqream-detail-record {
+        margin-bottom:18px;
+        border:1px solid #dcdcdc;
+        border-radius:4px;
+        overflow:hidden;
+        background:#fff;
+    }
+    .sqream-detail-table {
+        width:100%;
+        border-collapse:collapse;
+        table-layout:fixed;
+    }
+    .sqream-detail-table col.detail-label-col {
+        width:190px !important;
+    }
+    .sqream-detail-table th,
+    .sqream-detail-table td {
+        background:#fff;
+        color:#333;
+        word-break:break-all;
+        white-space:normal;
+    }
+    .sqream-detail-table th {
+        background:#f7f7fb;
+        color:#64718a;
+        font-weight:600;
+        text-align:center;
+    }
+    .sqream-detail-table td { background:#fff;color:#333;word-break:break-all;white-space:normal; }
+    .sqream-detail-value-box {
+        width:100%;
+        min-height:0 !important;
+        padding:0 !important;
+        border:0 !important;
+        border-radius:0 !important;
+        background:transparent !important;
+        box-sizing:border-box;
+        line-height:20px;
+        font-size:14px !important;
+        white-space:pre-wrap;
+    }
+
+    .sqream-detail .m_modal_header .tit {
+        font-size:22px !important;
+    }
+    .sqream-detail-table tr:last-child th,
+    .sqream-detail-table tr:last-child td {
+        border-bottom:0;
+    }
+
+
+    /* ===== 메인 조회 Grid 중앙 정렬: Metrics Process와 동일 ===== */
+    .worker-log-grid-shell {
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box;
+    }
+
+    #gbox_workerLogGrid {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    #gbox_workerLogGrid .ui-jqgrid-htable th,
+    #gbox_workerLogGrid .ui-jqgrid-htable th div {
+        text-align: center !important;
+    }
+
+    #workerLogPager {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    #workerLogPager .ui-pg-table {
+        width: auto !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+
+    /* ===== 검색영역: Metrics Node HTML과 동일 ===== */
+    .trace_search .top {
+        display: flex;
+        align-items: flex-end;
+        width: 100%;
+        gap: 38px;
+        flex-wrap: nowrap;
+    }
+
+    .trace_search .search-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .trace_search .search-group > .tit {
+        height: 22px;
+        line-height: 22px;
+        margin: 0 0 8px 0 !important;
+    }
+
+    .trace_search .control-row {
+        height: 48px;
+        display: flex;
+        align-items: center;
+    }
+
+    .trace_search .datepicker_wrap {
+        flex: 0 0 465px;
+        min-width: 465px;
+    }
+
+    .trace_search .datepicker_wrap .input_box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100% !important;
+        height: 48px;
+        gap: 10px;
+        margin: 0 !important;
+    }
+
+    .trace_search .datepicker_wrap .input_box input {
+        width: 220px !important;
+        height: 48px !important;
+        box-sizing: border-box;
+    }
+
+    .trace_search .metrics-middle {
+        flex: 1 1 auto;
+        min-width: 360px;
+        max-width: 720px;
+    }
+
+    .trace_search .metrics-middle .input_box {
+        width: 100% !important;
+        height: 48px;
+        margin: 0 !important;
+        display: flex;
+        align-items: center;
+    }
+
+    .trace_search .metrics-middle .input_box input {
+        width: 100% !important;
+        height: 48px !important;
+        box-sizing: border-box;
+    }
+
+    .trace_search .btn_area {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex: 0 0 auto;
+        width: auto !important;
+        height: 48px;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .trace_search .btn_area button {
+        height: 48px;
+    }
+
+    /* ===== 20260901 추가 시작 : Worker Log 차트보기 버튼 아이콘 ===== */
+    .metrics-chart-icon {
+        display:inline-block;
+        margin-right:6px;
+        font-size:15px;
+        vertical-align:-1px;
+    }
+    /* ===== 20260901 추가 끝 : Worker Log 차트보기 버튼 아이콘 ===== */
+
+    /* ===== 20260902 추가 시작 : Metrics Node와 동일한 Worker Log 상세조회 스타일 ===== */
+    .sqream-detail .m_modal_container {
+        width: 980px !important;
+        max-width: 980px !important;
+        min-width: 980px !important;
+        max-height: 92vh !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .sqream-detail .m_modal_body {
+        max-height: calc(92vh - 70px);
+        overflow-y: auto;
+        box-sizing: border-box;
+    }
+
+    .sqream-detail-summary {
+        margin: 0 0 14px 0;
+        padding: 13px 15px !important;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: #fafafa;
+        font-size: 15px !important;
+        color: #555;
+    }
+
+    .sqream-detail-record {
+        margin-bottom: 18px;
+        border: 1px solid #dcdcdc;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .sqream-detail-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .sqream-detail-table col.detail-label-col {
+        width: 190px !important;
+    }
+
+    .sqream-detail-table th,
+    .sqream-detail-table td {
+        border-bottom: 1px solid #e4e4e4;
+        padding: 12px 14px !important;
+        font-size: 14px !important;
+        vertical-align: middle;
+        box-sizing: border-box;
+    }
+
+    .sqream-detail-table tr:last-child th,
+    .sqream-detail-table tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .sqream-detail-table th {
+        background: #f7f7fb;
+        color: #64718a;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .sqream-detail-table td {
+        background: #fff;
+        color: #333;
+        word-break: break-all;
+        white-space: normal;
+    }
+
+    .sqream-detail-value-box {
+        width: 100%;
+        min-height: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-sizing: border-box;
+        line-height: 20px;
+        font-size: 14px !important;
+        white-space: pre-wrap;
+    }
+
+    .sqream-detail .m_modal_header .tit {
+        font-size: 22px !important;
+    }
+    /* ===== 20260902 추가 끝 : Metrics Node와 동일한 Worker Log 상세조회 스타일 ===== */
+
+
+    /* ===== 20260902 추가 시작 : Metrics Node와 동일한 Worker Log 하단 Pager 스타일 ===== */
+    #workerLogPager {
+        width: 100% !important;
+        min-height: 58px !important;
+        position: relative !important;
+        text-align: center !important;
+    }
+
+    #workerLogPager .ui-pager-table,
+    #workerLogPager .ui-pg-table {
+        width: auto !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    #workerLogPager > .ui-pg-table,
+    #workerLogPager .ui-jqgrid-pager > .ui-pg-table {
+        width: auto !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    #workerLogPager .ui-pg-table > tbody > tr {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: auto !important;
+        gap: 8px !important;
+    }
+
+    #workerLogPager_left,
+    #workerLogPager_center,
+    #workerLogPager_right,
+    #workerLogPager td[id$="_left"],
+    #workerLogPager td[id$="_center"],
+    #workerLogPager td[id$="_right"] {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        right: auto !important;
+        transform: none !important;
+        float: none !important;
+        width: auto !important;
+        min-width: 0 !important;
+        padding: 0 3px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        white-space: nowrap !important;
+    }
+
+    #workerLogPager_left .ui-pg-table,
+    #workerLogPager_center .ui-pg-table,
+    #workerLogPager_right .ui-pg-table {
+        width: auto !important;
+        margin: 0 !important;
+    }
+
+    #workerLogPager .ui-pg-button,
+    #workerLogPager .ui-paging-info,
+    #workerLogPager select,
+    #workerLogPager input {
+        flex: 0 0 auto !important;
+    }
+
+    .ui-jqgrid #workerLogPager.ui-jqgrid-pager {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    #workerLogPager_center {
+        text-align: center !important;
+    }
+    /* ===== 20260902 추가 끝 : Metrics Node와 동일한 Worker Log 하단 Pager 스타일 ===== */
+
+
+    /* ===== 20260902 추가 시작 : Worker Log 메인 Grid 전체 폭 복원 ===== */
+    .worker-log-grid-shell {
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 100% !important;
+        display: block !important;
+        box-sizing: border-box !important;
+    }
+
+    #gbox_workerLogGrid,
+    #gview_workerLogGrid,
+    #workerLogPager {
+        width: 100% !important;
+        max-width: none !important;
+        box-sizing: border-box !important;
+    }
+    /* ===== 20260902 추가 끝 : Worker Log 메인 Grid 전체 폭 복원 ===== */
+
+    /* ===== 20260902 추가 시작 : Worker Log 분석 대형 팝업 ===== */
+    .worker-log-chart-modal .m_modal_container {
+        width: 96vw !important;
+        max-width: 1900px !important;
+        min-width: 1200px !important;
+        height: 88vh !important;
+        max-height: 88vh !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        background: #fff !important;
+        box-sizing: border-box !important;
+    }
+
+    .worker-log-chart-modal .worker-log-chart-header {
+        height: 86px !important;
+        min-height: 86px !important;
+        padding: 0 36px !important;
+        display: flex !important;
+        align-items: center !important;
+        position: relative !important;
+        box-sizing: border-box !important;
+        background: #929292 !important;
+        border-bottom: 0 !important;
+    }
+
+    .worker-log-chart-modal .worker-log-chart-header .tit {
+        margin: 0 !important;
+        color: #fff !important;
+        font-size: 22px !important;
+        font-weight: 600 !important;
+    }
+
+    .worker-log-chart-modal .worker-log-chart-header .m_modal_close {
+        position: absolute !important;
+        top: 50% !important;
+        right: 28px !important;
+        transform: translateY(-50%) !important;
+        margin: 0 !important;
+    }
+
+    .worker-log-chart-modal .worker-log-chart-body {
+        width: 100% !important;
+        height: calc(88vh - 86px) !important;
+        max-height: calc(88vh - 86px) !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: auto !important;
+        background: #fff !important;
+        box-sizing: border-box !important;
+    }
+
+    .worker-log-chart-modal .worker-log-end-query-area {
+        width: 100% !important;
+        min-height: 100% !important;
+        padding: 18px 22px 22px !important;
+        box-sizing: border-box !important;
+        background: #fff !important;
+    }
+    /* ===== 20260902 추가 끝 : Worker Log 분석 대형 팝업 ===== */
+
+
+    /* ===== 20260902 추가 시작 : Metrics Node 차트 팝업과 동일한 Worker Log 팝업 스타일 최종 적용 ===== */
+    .worker-log-chart-modal .m_modal_container {
+        width: 94vw !important;
+        max-width: 1700px !important;
+        min-width: 1200px !important;
+        height: auto !important;
+        max-height: 92vh !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        background: #fff !important;
+        box-sizing: border-box !important;
+    }
+
+    .worker-log-chart-modal .m_modal_header,
+    .worker-log-chart-modal .worker-log-chart-header {
+        display: flex !important;
+        align-items: center !important;
+        height: auto !important;
+        min-height: 66px !important;
+        padding: 0 58px 0 28px !important;
+        box-sizing: border-box !important;
+        background: #929292 !important;
+    }
+
+    .worker-log-chart-modal .m_modal_header .tit,
+    .worker-log-chart-modal .worker-log-chart-header .tit {
+        flex: 0 0 auto !important;
+        margin: 0 24px 0 0 !important;
+        padding: 0 !important;
+        line-height: normal !important;
+        color: #fff !important;
+        font-size: 20px !important;
+        font-weight: 600 !important;
+    }
+
+    .worker-log-chart-modal .worker-log-chart-header .m_modal_close {
+        right: 24px !important;
+    }
+
+    .worker-log-chart-modal .m_modal_body,
+    .worker-log-chart-modal .worker-log-chart-body {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        height: 72vh !important;
+        max-height: calc(92vh - 66px) !important;
+        min-height: 520px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        background: #fff !important;
+    }
+
+    /* th:replace 시 wrapper 자체가 사라지므로 fragment의 실제 첫 요소를 직접 채운다. */
+    .worker-log-chart-modal .worker-end-modal-body.worker-end-embedded-body {
+        flex: 1 1 auto !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 10px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        background: #0e1420 !important;
+    }
+
+    .worker-log-chart-modal .worker-end-panel {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .worker-log-chart-modal .worker-end-table-scroll {
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        width: 100% !important;
+        overflow: auto !important;
+    }
+    /* ===== 20260902 추가 끝 : Metrics Node 차트 팝업과 동일한 Worker Log 팝업 스타일 최종 적용 ===== */
+
+
+    /* ===== 20260902 추가 시작 : Statement ID 링크 + 쿼리문/실행계획 상세 팝업 스타일 ===== */
+    .statement-id-link {
+        color:#0066cc !important;
+        text-decoration:underline !important;
+        cursor:pointer !important;
+    }
+
+    .sqream-statement-modal .m_modal_container {
+        width:980px !important;
+        max-width:980px !important;
+        min-width:980px !important;
+        max-height:92vh !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+
+    .sqream-statement-modal .m_modal_body {
+        max-height:calc(92vh - 70px);
+        overflow-y:auto;
+        box-sizing:border-box;
+    }
+
+    .sqream-statement-summary {
+        margin:0 0 14px 0;
+        padding:13px 15px;
+        border:1px solid #ddd;
+        border-radius:4px;
+        background:#fafafa;
+        color:#555;
+        font-size:14px;
+    }
+
+    .sqream-statement-tabs {
+        display:flex;
+        gap:0;
+        margin:0;
+        padding:0;
+        border-bottom:1px solid #dcdcdc;
+    }
+
+    .sqream-statement-tab {
+        min-width:150px;
+        height:46px;
+        padding:0 20px;
+        border:1px solid #dcdcdc;
+        border-bottom:0;
+        margin-right:-1px;
+        background:#e9e9e9;
+        color:#555;
+        font-size:14px;
+        font-weight:600;
+        cursor:pointer;
+    }
+
+    .sqream-statement-tab.on {
+        background:#fff;
+        color:#222;
+        border-top:3px solid #e43d30;
+    }
+
+    .sqream-statement-pane {
+        display:none;
+        border:1px solid #dcdcdc;
+        border-top:0;
+        background:#fff;
+        padding:16px;
+        box-sizing:border-box;
+    }
+
+    .sqream-statement-pane.on {
+        display:block;
+    }
+
+    .sqream-statement-pre {
+        width:100%;
+        min-height:260px;
+        max-height:420px;
+        margin:0;
+        padding:15px;
+        box-sizing:border-box;
+        overflow:auto;
+        border:1px solid #e0e0e0;
+        border-radius:4px;
+        background:#fafafa;
+        color:#333;
+        font-family:Consolas,"Malgun Gothic",monospace;
+        font-size:13px;
+        line-height:1.65;
+        white-space:pre-wrap;
+        word-break:break-all;
+    }
+
+    .sqream-statement-plan-table {
+        width:100%;
+        border-collapse:collapse;
+        table-layout:fixed;
+        font-size:13px;
+    }
+
+    .sqream-statement-plan-table th,
+    .sqream-statement-plan-table td {
+        padding:10px 8px;
+        border-bottom:1px solid #e4e4e4;
+        text-align:center;
+        word-break:break-all;
+    }
+
+    .sqream-statement-plan-table th {
+        background:#f7f7fb;
+        color:#64718a;
+        font-weight:600;
+    }
+
+    .sqream-statement-plan-table td {
+        background:#fff;
+        color:#333;
+    }
+
+    .sqream-statement-plan-wrap {
+        max-height:420px;
+        overflow:auto;
+        border:1px solid #e0e0e0;
+        border-radius:4px;
+    }
+    /* ===== 20260902 추가 끝 : Statement ID 링크 + 쿼리문/실행계획 상세 팝업 스타일 ===== */
+
+
+    /* ===== 20260902 추가 시작 : 메인 조회 Grid 가운데 정렬 ===== */
+    .sqream-main-grid-center {
+        width: 100%;
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .sqream-main-grid-center .ui-jqgrid {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    /* ===== 20260902 추가 끝 : 메인 조회 Grid 가운데 정렬 ===== */
+
+    /* ===== 20260907 추가 시작 : SQream 메인 검색조건 UI - Metrics Node 스타일로 폭 축소 ===== */
+    .sqream-search-advanced {
+        margin-bottom: 14px;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row {
+        display:flex;
+        align-items:flex-end;
+        gap:18px;
+        width:100%;
+        margin-bottom:12px;
+        flex-wrap:wrap;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row .datepicker_wrap {
+        flex:0 0 465px;
+        min-width:465px;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row .datepicker_wrap .input_box {
+        display:flex;
+        align-items:center;
+        gap:10px;
+        height:48px;
+        margin:0 !important;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row .datepicker_wrap input {
+        width:220px !important;
+        height:48px !important;
+        box-sizing:border-box;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row .btn_area {
+        display:flex;
+        align-items:center;
+        gap:10px;
+        height:48px;
+        padding:0 !important;
+        margin:0 !important;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row .btn_area button {
+        height:48px;
+    }
+
+    /* Metrics Node와 동일하게 고정폭 검색칸 + flex wrap */
+    .sqream-filter-grid {
+        display:flex;
+        align-items:flex-end;
+        gap:10px;
+        flex-wrap:wrap;
+        width:100%;
+    }
+
+    .sqream-filter-item {
+        display:flex;
+        flex-direction:column;
+        gap:5px;
+        min-width:120px;
+        width:auto;
+    }
+
+    .sqream-filter-item > .tit {
+        display:block;
+        height:20px;
+        line-height:20px;
+        margin:0 !important;
+        font-size:12px;
+        font-weight:600;
+        color:#555;
+        white-space:nowrap;
+    }
+
+    .sqream-filter-item .input_box {
+        display:flex !important;
+        align-items:center !important;
+        width:auto !important;
+        height:38px !important;
+        margin:0 !important;
+        gap:6px;
+    }
+
+    .sqream-filter-item input,
+    .sqream-filter-item select {
+        width:145px !important;
+        height:38px !important;
+        box-sizing:border-box;
+        min-width:0;
+    }
+
+    .sqream-filter-item select {
+        width:125px !important;
+    }
+
+    .sqream-threshold-wrap {
+        display:inline-flex;
+        align-items:center;
+        width:auto;
+        gap:6px;
+    }
+
+    .sqream-threshold-wrap input {
+        width:112px !important;
+        flex:0 0 112px;
+    }
+
+    .sqream-threshold-unit {
+        flex:0 0 auto;
+        color:#555;
+        font-size:12px;
+        font-weight:600;
+        white-space:nowrap;
+    }
+
+    /* 긴 문자열 조건만 약간 넓게 */
+    #workerLogWorkerHostname,
+    #workerLogDatabaseName,
+    #serverStatusDatabaseName,
+    #sqreamTableDatabaseName,
+    #queryRuntimeUserName {
+        width:165px !important;
+    }
+
+    #workerLogMessage,
+    #serverStatusStatement {
+        width:205px !important;
+    }
+    /* ===== 20260907 추가 끝 : SQream 메인 검색조건 UI - Metrics Node 스타일로 폭 축소 ===== */
+
+
+    /* ===== 20260908 추가 시작 : 검색 버튼을 마지막 검색조건 우측에 배치 ===== */
+.sqream-filter-grid .sqream-search-actions {
+    display: flex !important;
+    align-items: center !important;
+    align-self: flex-end !important;
+    gap: 10px !important;
+
+    height: 38px !important;
+    width: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    flex: 0 0 auto !important;
+}
+
+.sqream-filter-grid .sqream-search-actions button {
+    height: 38px !important;
+}
+/* ===== 20260908 추가 끝 : 검색 버튼을 마지막 검색조건 우측에 배치 ===== */
+</style>
+
+<div class="container"><div class="content trace">
+    <h2>SQream Worker Log 조회</h2>
+    <!-- ===== 20260907 추가 시작 : Worker Log 검색 UI ===== -->
+    <div class="trace_search sqream-search-advanced">
+        <div class="sqream-search-date-row">
+            <div class="datepicker_wrap search-group">
+                <p class="tit">조회기간</p>
+                <div class="input_box">
+                    <input type="text" class="m_input datepicker date time" id="workerLogSearchStart"/>
+                    <span>-</span>
+                    <input type="text" class="m_input datepicker date time" id="workerLogSearchEnd"/>
+                </div>
+            </div>
+<!--            <div class="btn_area">-->
+<!--                <button type="button" class="btn_red" style="border-radius:7px;width:62px" onclick="searchWorkerLog();">검색</button>-->
+<!--                &lt;!&ndash; ===== 20260901 추가 시작 : Worker Log 종료 쿼리 화면 버튼 ===== &ndash;&gt;-->
+<!--                <button type="button" class="btn_black" style="border-radius:7px;width:115px" onclick="openWorkerLogChart();">-->
+<!--                    <span class="metrics-chart-icon">▥</span>차트보기-->
+<!--                </button>-->
+<!--                &lt;!&ndash; ===== 20260901 추가 끝 : Worker Log 종료 쿼리 화면 버튼 ===== &ndash;&gt;-->
+<!--            </div>-->
+        </div>
+        <div class="sqream-filter-grid"><div class="sqream-filter-item">
+                    <p class="tit">Hostname</p>
+                    <div class="input_box"><input type="text" class="m_input" id="workerLogHostname" onkeydown="if(event.keyCode===13) searchWorkerLog();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">GPU ID</p>
+                    <div class="input_box"><input type="text" class="m_input" id="workerLogGpuId" onkeydown="if(event.keyCode===13) searchWorkerLog();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">GI ID</p>
+                    <div class="input_box"><input type="text" class="m_input" id="workerLogGiId" onkeydown="if(event.keyCode===13) searchWorkerLog();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Worker Hostname</p>
+                    <div class="input_box"><input type="text" class="m_input" id="workerLogWorkerHostname" onkeydown="if(event.keyCode===13) searchWorkerLog();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Database Name</p>
+                    <div class="input_box"><input type="text" class="m_input" id="workerLogDatabaseName" onkeydown="if(event.keyCode===13) searchWorkerLog();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Statement ID</p>
+                    <div class="input_box"><input type="number" class="m_input" id="workerLogStatementId" min="0" step="0.01" inputmode="decimal" onkeydown="if(event.keyCode===13) searchWorkerLog();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">User ID</p>
+                    <div class="input_box"><input type="text" class="m_input" id="workerLogUserId" onkeydown="if(event.keyCode===13) searchWorkerLog();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Message</p>
+                    <div class="input_box"><input type="text" class="m_input" id="workerLogMessage" onkeydown="if(event.keyCode===13) searchWorkerLog();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Query Execution Time(ms)</p>
+                    <div class="input_box"><div class="sqream-threshold-wrap"><input type="number" class="m_input" id="workerLogQueryExecutionTimeMs" min="0" step="0.01" inputmode="decimal" onkeydown="if(event.keyCode===13) searchWorkerLog();"/><span class="sqream-threshold-unit">이상</span></div></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">SQL Type</p>
+                    <div class="input_box"><select class="m_input" id="workerLogSqlType"><option value="">전체</option><option value="SELECT">SELECT</option><option value="INSERT">INSERT</option><option value="UPDATE">UPDATE</option><option value="DELETE">DELETE</option><option value="COPY">COPY</option><option value="WITH">WITH</option><option value="DROP">DROP</option></select></div>
+                </div></div>
+        <!-- ===== 20260908 추가 시작 : Worker Log 검색/차트보기 버튼 SQL Type 우측 배치 ===== -->
+        <div class="btn_area sqream-search-actions">
+            <button type="button"
+                    class="btn_red"
+                    style="border-radius:7px;width:62px"
+                    onclick="searchWorkerLog();">검색</button>
+
+            <button type="button"
+                    class="btn_black"
+                    style="border-radius:7px;width:115px"
+                    onclick="openWorkerLogChart();">
+                <span class="metrics-chart-icon">▥</span>차트보기
+            </button>
+        </div>
+        <!-- ===== 20260908 추가 끝 : Worker Log 검색/차트보기 버튼 SQL Type 우측 배치 ===== -->
+    </div>
+    <!-- ===== 20260907 추가 끝 : Worker Log 검색 UI ===== -->
+    <div class="sqream-main-grid-center width1 grid_wrap textleft worker-log-grid-shell">
+        <table id="workerLogGrid"></table><div id="workerLogPager"></div></div>
+</div></div>
+
+<div id="workerLogDetailModal" class="m_modal sqream-detail"><div class="m_modal_container">
+    <div class="m_modal_header"><h2 class="tit">SQream Worker Log 상세조회</h2><p class="m_modal_close" onclick="closeWorkerLogDetail();"></p></div>
+    <div class="m_modal_body"><div id="workerLogDetailSummary" class="sqream-detail-summary"></div>
+        <div id="workerLogDetailBody"></div><div class="modal_btn_area">
+            <button class="modal_btn_gray" onclick="closeWorkerLogDetail();" type="button">닫기</button></div></div>
+</div></div>
+
+
+<!-- ===== 20260902 수정 시작 : Worker Log 분석 팝업 내부에 종료 쿼리 Content Fragment 삽입 ===== -->
+<div id="workerLogEndQueriesModal" class="m_modal worker-log-chart-modal">
+    <div class="m_modal_container">
+        <div class="m_modal_header worker-log-chart-header">
+            <h2 class="tit">SQream Worker Log 분석</h2>
+            <p class="m_modal_close" onclick="closeWorkerLogChart();"></p>
+        </div>
+
+        <div class="m_modal_body worker-log-chart-body">
+            <div class="worker-log-end-query-area"
+                 th:replace="thymeleaf/aicurrentdashboard/sqream/worker_log_end_queries :: workerLogEndQueriesContent">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===== 20260902 수정 끝 : Worker Log 분석 팝업 내부에 종료 쿼리 Content Fragment 삽입 ===== -->
+
+
+<!-- ===== 20260902 추가 시작 : Statement ID 쿼리문/실행계획 상세 팝업 ===== -->
+<div id="sqreamStatementDetailModal" class="m_modal sqream-statement-modal">
+    <div class="m_modal_container">
+        <div class="m_modal_header">
+            <h2 class="tit">SQream Statement 상세조회</h2>
+            <p class="m_modal_close" onclick="closeSqreamStatementDetail();"></p>
+        </div>
+
+        <div class="m_modal_body">
+            <div id="sqreamStatementSummary" class="sqream-statement-summary"></div>
+
+            <div class="sqream-statement-tabs">
+                <button type="button"
+                        id="sqreamStatementSqlTab"
+                        class="sqream-statement-tab on"
+                        onclick="switchSqreamStatementTab('sql');">쿼리문</button>
+
+                <button type="button"
+                        id="sqreamStatementPlanTab"
+                        class="sqream-statement-tab"
+                        onclick="switchSqreamStatementTab('plan');">실행 계획</button>
+            </div>
+
+            <div id="sqreamStatementSqlPane" class="sqream-statement-pane on">
+                <pre id="sqreamStatementSql" class="sqream-statement-pre"></pre>
+            </div>
+
+            <div id="sqreamStatementPlanPane" class="sqream-statement-pane">
+                <div class="sqream-statement-plan-wrap">
+                    <!-- ===== 20260902 수정 시작 : Worker Log 차트와 동일한 실행계획 컬럼 ===== -->
+                    <table class="sqream-statement-plan-table">
+                        <!-- ===== 20260908 추가 시작 : 실행계획 7개 컬럼 분리 ===== -->
+                        <thead>
+                        <tr>
+                            <th style="width:70px;">Step</th>
+                            <th style="width:200px;">Plan Name</th>
+                            <th style="width:120px;">Rows</th>
+                            <th style="width:100px;">Chunks</th>
+                            <th style="width:150px;">Chunk Per Rows</th>
+                            <th style="width:180px;">Plan Time</th>
+                            <th style="width:100px;">Status</th>
+                        </tr>
+                        </thead>
+                        <!-- ===== 20260908 추가 끝 : 실행계획 7개 컬럼 분리 ===== -->
+                        <tbody id="sqreamStatementPlanBody"></tbody>
+                    </table>
+                    <!-- ===== 20260902 수정 끝 : Worker Log 차트와 동일한 실행계획 컬럼 ===== -->
+                </div>
+            </div>
+
+            <div class="modal_btn_area">
+                <button class="modal_btn_gray"
+                        onclick="closeSqreamStatementDetail();"
+                        type="button">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===== 20260902 추가 끝 : Statement ID 쿼리문/실행계획 상세 팝업 ===== -->
+
+
+<script>
+    "use strict";
+    var workerLogVars={baseUrl:"/api/aisqreamboard/worker_log",grid:$("#workerLogGrid")};
+    $(function(){
+     var end=new Date(),start=new Date(); start.setHours(start.getHours()-1);
+     util.datetimePicker($("#workerLogSearchStart"),start); util.datetimePicker($("#workerLogSearchEnd"),end);
+     initWorkerLogGrid(); searchWorkerLog();
+    });
+    function initWorkerLogGrid(){
+     util.jqGrid(workerLogVars.grid,{datatype:"local",rownumbers:true,rownumWidth:32,
+     // ===== 20260901 수정 시작 : MetricsProcess와 동일한 메인 Grid 폭 설정 =====
+     shrinkToFit:true,autowidth:true,
+     // ===== 20260901 수정 끝 : MetricsProcess와 동일한 메인 Grid 폭 설정 =====
+     // ===== 20260902 수정 시작 : Worker Log 메인 조회 컬럼 순서/표시 형식 변경 =====
+     colNames:["Global UUID","Hostname","Host IP","Query Start Time","Query End Time","Query Execution Time(sec)","SQL Statement","Query Plan","Database Name","Service Name","User ID","Connection ID","Statement ID"],
+     colModel:[
+     {name:"globalUuid",width:230,align:"center",formatter:function(v,opt,row){if(!v)return "";return '<a class="global-uuid-link" onclick="viewWorkerLogDetail(\''+String(row.id).replace(/\'/g,"\'")+'\',\''+String(v).replace(/\'/g,"\'")+'\')">'+$.jgrid.htmlEncode(v)+"</a>";}},
+     {name:"hostname",width:145,align:"center"},
+     {name:"hostip",width:130,align:"center"},
+     {name:"queryStartTime",width:155,align:"center",formatter:formatSqDateTime},
+     {name:"queryEndTime",width:155,align:"center",formatter:formatSqDateTime},
+     {name:"queryExecutionTimeMs",width:170,align:"center",formatter:formatSqExecutionSecondsOneDecimal},
+     {name:"sqlStatement",width:320,align:"center"},
+     {name:"queryPlan",width:320,align:"center"},
+     {name:"databaseName",width:140,align:"center"},
+     {name:"serviceName",width:140,align:"center"},
+     {name:"userId",width:120,align:"center"},
+     {name:"connectionId",width:130,align:"center",formatter:formatSqRawInteger},
+     // ===== 20260902 추가 시작 : Statement ID 파란 링크 =====
+     {name:"statementId",width:130,align:"center",formatter:formatStatementIdLink}
+     // ===== 20260902 추가 끝 : Statement ID 파란 링크 =====
+     ],
+     // ===== 20260902 수정 끝 : Worker Log 메인 조회 컬럼 순서/표시 형식 변경 =====
+     rowNum:20,rowList:[20,50,100,200],pager:"#workerLogPager"});
+    }
+    function searchWorkerLog(){
+     var url=workerLogVars.baseUrl+"?page=0&size=200";
+     var start=normalizeDate($("#workerLogSearchStart").val());
+     var end=normalizeDate($("#workerLogSearchEnd").val());
+     if(start) url+="&startTime="+encodeURIComponent(start);
+     if(end) url+="&endTime="+encodeURIComponent(end);
+
+     // ===== 20260907 추가 시작 : Worker Log 검색 파라미터 =====
+     var params={
+      hostname:$("#workerLogHostname").val(),
+      gpuId:$("#workerLogGpuId").val(),
+      giId:$("#workerLogGiId").val(),
+      workerHostname:$("#workerLogWorkerHostname").val(),
+      databaseName:$("#workerLogDatabaseName").val(),
+      statementId:$("#workerLogStatementId").val(),
+      userId:$("#workerLogUserId").val(),
+      message:$("#workerLogMessage").val(),
+      queryExecutionTimeMs:$("#workerLogQueryExecutionTimeMs").val(),
+      sqlType:$("#workerLogSqlType").val()
+     };
+     $.each(params,function(k,v){
+      if(v!==undefined&&v!==null&&String(v).trim()!==""){
+       url+="&"+encodeURIComponent(k)+"="+encodeURIComponent(String(v).trim());
+      }
+     });
+     // ===== 20260907 추가 끝 : Worker Log 검색 파라미터 =====
+
+     $.get(url,function(data){
+      workerLogVars.grid.clearGridData();
+      workerLogVars.grid.setGridParam({data:data.content||[],datatype:"local"}).trigger("reloadGrid");
+      centerWorkerLogGrid();
+     }).fail(function(){alert("SQream Worker Log 조회에 실패했습니다.");});
+    }
+
+    // ===== 20260902 수정 시작 : Worker Log 메인 Grid 전체 가용 폭 사용 =====
+    function centerWorkerLogGrid(){
+     var $wrap=$(".worker-log-grid-shell");
+     var width=$wrap.width();
+     if(width && workerLogVars.grid[0] && workerLogVars.grid[0].grid){
+      workerLogVars.grid.jqGrid("setGridWidth",width,true);
+     }
+    }
+    // ===== 20260902 수정 끝 : Worker Log 메인 Grid 전체 가용 폭 사용 =====
+
+    // ===== 20260902 수정 시작 : Worker Log 분석 팝업 오픈 + 종료쿼리 데이터 조회 =====
+    function openWorkerLogChart(){
+     $("#workerLogEndQueriesModal").addClass("on");
+     $("body").css("overflow","hidden");
+     if(typeof loadWorkerEndQueries === "function"){ loadWorkerEndQueries(); }
+    }
+    function closeWorkerLogChart(){
+     $("#workerLogEndQueriesModal").removeClass("on");
+     $("body").css("overflow","auto");
+    }
+    // ===== 20260902 수정 끝 : Worker Log 분석 팝업 오픈 + 종료쿼리 데이터 조회 =====
+
+    function viewWorkerLogDetail(id,globalUuid){
+     $.get(workerLogVars.baseUrl+"/"+encodeURIComponent(id),function(row){
+      $("#workerLogDetailSummary").text("Global UUID: "+(globalUuid||row.globalUuid||"-"));
+      renderWorkerLogDetail(row||{});$("#workerLogDetailModal").addClass("on");$("body").css("overflow","hidden");
+     }).fail(function(){alert("상세 조회에 실패했습니다.");});
+    }
+    function renderWorkerLogDetail(row){
+     var html='<div class="sqream-detail-record"><table class="sqream-detail-table"><colgroup><col class="detail-label-col"><col></colgroup><tbody>';
+     html+=sqDetailRow("Server ID",row.serverId);
+     html+=sqDetailRow("Hostname",row.hostname);
+     html+=sqDetailRow("Host IP",row.hostip);
+     html+=sqDetailRow("수집시간",formatSqDateTime(row.collectTime));
+     html+=sqDetailRow("Row ID",row.rowId);
+     html+=sqDetailRow("Timestamp",formatSqDateTime(row.timestamp));
+     html+=sqDetailRow("Information Level",row.informationLevel);
+     html+=sqDetailRow("Thread ID",row.threadId);
+     html+=sqDetailRow("Worker Hostname",row.workerHostname);
+     // ===== 20260902 수정 시작 : Worker Port 천단위 콤마 제거 =====
+      html+=sqDetailRow("Worker Port",formatSqRawInteger(row.workerPort));
+      // ===== 20260902 수정 끝 : Worker Port 천단위 콤마 제거 =====
+     // ===== 20260902 수정 시작 : Connection ID 천단위 콤마 제거 =====
+      html+=sqDetailRow("Connection ID",formatSqRawInteger(row.connectionId));
+      // ===== 20260902 수정 끝 : Connection ID 천단위 콤마 제거 =====
+     html+=sqDetailRow("Database Name",row.databaseName);
+     html+=sqDetailRow("User ID",row.userId);
+     // ===== 20260902 수정 시작 : Statement ID 천단위 콤마 제거 =====
+      html+=sqDetailRow("Statement ID",formatSqRawInteger(row.statementId));
+      // ===== 20260902 수정 끝 : Statement ID 천단위 콤마 제거 =====
+     html+=sqDetailRow("Service Name",row.serviceName);
+     html+=sqDetailRow("Message Type ID",row.messageTypeId);
+     html+=sqDetailRow("Message Type",row.messageType);
+     html+=sqDetailRow("Message",row.message);
+     html+=sqDetailRow("Query Start Time",formatSqDateTime(row.queryStartTime));
+     html+=sqDetailRow("Query End Time",formatSqDateTime(row.queryEndTime));
+     html+=sqDetailRow("Query Execution Time(ms)",formatSqMs(row.queryExecutionTimeMs));
+     html+=sqDetailRow("Termination Status",row.queryTerminationStatus);
+     html+=sqDetailRow("Termination Message",row.queryTerminationMessage);
+     html+=sqDetailRow("Total Data Read(MB)",formatSqNumber(row.totalDataReadMb));
+     html+=sqDetailRow("Total Processed Rows",formatSqNumber(row.totalProcessedRows));
+     html+=sqDetailRow("Result Row Count",formatSqNumber(row.resultRowCount));
+     html+=sqDetailRow("SQL Statement",row.sqlStatement);
+     html+=sqDetailRow("SQL Type",row.sqlType);
+     html+=sqDetailRow("Log File Path",row.logFilePath);
+     html+=sqDetailRow("Error Details",row.errorDetails);
+     html+=sqDetailRow("Query Plan",row.queryPlan);
+     html+=sqDetailRow("Lock Wait Time(ms)",formatSqMs(row.lockWaitTimeMs));
+     html+=sqDetailRow("Network Transmit",formatSqBytesGB(row.networkTransmitBytes));
+     html+=sqDetailRow("Log Key",row.logKey);
+     html+=sqDetailRow("Terminated",formatSqBool(row.terminated));
+     html+=sqDetailRow("Create DT",formatSqDateTime(row.createDt));
+     html+=sqDetailRow("Update DT",formatSqDateTime(row.updateDt));
+     html+='</tbody></table></div>'; $("#workerLogDetailBody").html(html);
+    }
+    function closeWorkerLogDetail(){ $("#workerLogDetailModal").removeClass("on");$("body").css("overflow","auto"); }
+    function sqDetailRow(label,value){var v=(value===null||value===undefined||value==="")?"-":String(value);return '<tr><th>'+$.jgrid.htmlEncode(label)+'</th><td><div class="sqream-detail-value-box">'+$.jgrid.htmlEncode(v)+'</div></td></tr>';}
+    function formatSqDateTime(v) {
+      if (!v) return "";
+      var value = String(v).replace("T", " ");
+      return value.substring(0, 19);
+    }
+    function formatSqSeconds(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);if(isNaN(n))return v;var d=Math.floor(n/86400);n-=d*86400;var h=Math.floor(n/3600);n-=h*3600;var m=Math.floor(n/60);n-=m*60;var s=Math.round(n*1000)/1000;var a=[];if(d)a.push(d+"일");if(h||d)a.push(h+"시간");if(m||h||d)a.push(m+"분");a.push(s+"초");return a.join(" ");}
+    function formatSqBytesGB(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);if(isNaN(n))return v;return (n/1024/1024/1024).toFixed(2)+" GB";}
+    function formatSqMsAsSeconds(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);if(isNaN(n))return v;return formatSqSeconds(n/1000);}
+    // ===== 20260902 추가 시작 : Query Execution Time 초 단위 소수점 한자리 =====
+    function formatSqExecutionSecondsOneDecimal(v){
+      if(v===null||v===undefined||v==="")return "";
+      var n=Number(v);
+      if(isNaN(n))return v;
+      return (n/1000).toFixed(1);
+    }
+    // ===== 20260902 추가 끝 : Query Execution Time 초 단위 소수점 한자리 =====
+    function formatSqMs(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);return isNaN(n)?v:n.toLocaleString()+" ms";}
+    function formatSqRawInteger(v){if(v===null||v===undefined||v==="")return "";return String(v);}
+    function formatSqNumber(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);return isNaN(n)?v:n.toLocaleString();}
+    function formatSqBool(v){if(v===true)return "Y";if(v===false)return "N";return "";}
+    function normalizeDate(v){if(!v)return "";return String(v).trim().replace("T"," ");}
+
+    // ===== 20260902 추가 시작 : Statement ID 클릭 -> Connection ID + Statement ID로 Worker Log 조회 =====
+    function formatStatementIdLink(v,opt,row){
+      if(v===null||v===undefined||v==="") return "";
+
+      var conn=row.connectionId;
+      var stmt=row.statementId;
+
+      if(conn===null||conn===undefined||conn===""||stmt===null||stmt===undefined||stmt===""){
+        return $.jgrid.htmlEncode(String(v));
+      }
+
+      return '<a class="statement-id-link" href="javascript:void(0);" '+
+             'onclick="openSqreamStatementDetail(event,\''+
+             String(conn).replace(/'/g,"\\'")+'\',\''+
+             String(stmt).replace(/'/g,"\\'")+'\')">'+
+             $.jgrid.htmlEncode(String(v))+
+             '</a>';
+    }
+
+    function openSqreamStatementDetail(e,connectionId,statementId){
+      if(e){
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      var url="/api/aisqreamboard/worker_log/statement_detail"+
+              "?connectionId="+encodeURIComponent(connectionId)+
+              "&statementId="+encodeURIComponent(statementId);
+
+      $.get(url,function(row){
+        row=row||{};
+
+        $("#sqreamStatementSummary").text(
+          "Connection ID: "+(row.connectionId==null?"-":row.connectionId)+
+          " / Statement ID: "+(row.statementId==null?"-":row.statementId)+
+          " / User: "+(row.userId||"-")+
+          " / Service: "+(row.serviceName||"-")
+        );
+
+        $("#sqreamStatementSql").text(
+          row.sqlStatement||"SQL Statement 데이터가 없습니다."
+        );
+
+        renderSqreamStatementPlan(row.planSteps||[],row.queryPlan);
+
+        switchSqreamStatementTab("sql");
+        $("#sqreamStatementDetailModal").addClass("on");
+        $("body").css("overflow","hidden");
+      }).fail(function(xhr){
+        console.error("Statement detail API error",xhr.status,xhr.responseText);
+        alert("Statement 상세 조회에 실패했습니다.");
+      });
+    }
+
+<!--    // ===== 20260902 수정 시작 : Worker Log 차트와 동일한 실행계획 데이터 표시 =====-->
+<!--    function renderSqreamStatementPlan(steps,rawPlan){-->
+<!--      var html="";-->
+
+<!--      if(steps&&steps.length){-->
+<!--        $.each(steps,function(_,step){-->
+<!--          var detail=[];-->
+
+<!--          if(step.rows!=null) detail.push("Rows: "+formatSqNumber(step.rows));-->
+<!--          if(step.chunks!=null) detail.push("Chunks: "+formatSqNumber(step.chunks));-->
+<!--          if(step.chunkPerRows!=null) detail.push("Chunk Per Rows: "+formatSqNumber(step.chunkPerRows));-->
+<!--          if(step.tableInfo) detail.push(step.tableInfo);-->
+
+<!--          var runtime="-";-->
+<!--          if(step.planRuntime!==null&&step.planRuntime!==undefined&&step.planRuntime!==""){-->
+<!--            var n=Number(step.planRuntime);-->
+<!--            runtime=isNaN(n)?String(step.planRuntime):n.toFixed(2)+"s";-->
+<!--          }-->
+
+<!--          html+="<tr>"+-->
+<!--                "<td>"+sqreamStatementEscape(step.step)+"</td>"+-->
+<!--                "<td>"+sqreamStatementEscape(step.planName)+"</td>"+-->
+<!--                "<td style=\"text-align:left;\">"+sqreamStatementEscape(detail.length?detail.join(" / "):"-")+"</td>"+-->
+<!--                "<td>"+sqreamStatementEscape(runtime)+"</td>"+-->
+<!--                "<td>"+sqreamStatementEscape(step.status||"-")+"</td>"+-->
+<!--                "</tr>";-->
+<!--        });-->
+<!--      }else{-->
+<!--        html='<tr><td colspan="5" style="padding:25px;text-align:center;">'+-->
+<!--             sqreamStatementEscape(rawPlan||"Query Plan 데이터가 없습니다.")+-->
+<!--             '</td></tr>';-->
+<!--      }-->
+
+<!--      $("#sqreamStatementPlanBody").html(html);-->
+<!--    }-->
+<!--    // ===== 20260902 수정 끝 : Worker Log 차트와 동일한 실행계획 데이터 표시 =====-->
+
+    // ===== 20260908 추가 시작 : Rows / Chunks / Chunk Per Rows / Plan Time 개별 컬럼 출력 =====
+function renderSqreamStatementPlan(steps, rawPlan) {
+    var html = "";
+
+    if (steps && steps.length) {
+        $.each(steps, function (_, step) {
+
+            var rows = (step.rows == null || step.rows === "")
+                ? "-"
+                : formatSqNumber(step.rows);
+
+            var chunks = (step.chunks == null || step.chunks === "")
+                ? "-"
+                : formatSqNumber(step.chunks);
+
+            var chunkPerRows = (step.chunkPerRows == null || step.chunkPerRows === "")
+                ? "-"
+                : formatSqNumber(step.chunkPerRows);
+
+            var planTime = step.planTime
+                ? formatSqDateTime(step.planTime)
+                : "-";
+
+            html += "<tr>" +
+                "<td>" + sqreamStatementEscape(step.step) + "</td>" +
+                "<td>" + sqreamStatementEscape(step.planName) + "</td>" +
+                "<td class=\"num\">" + sqreamStatementEscape(rows) + "</td>" +
+                "<td class=\"num\">" + sqreamStatementEscape(chunks) + "</td>" +
+                "<td class=\"num\">" + sqreamStatementEscape(chunkPerRows) + "</td>" +
+                "<td>" + sqreamStatementEscape(planTime) + "</td>" +
+                "<td>" + sqreamStatementEscape(step.status || "-") + "</td>" +
+                "</tr>";
+        });
+    } else {
+        html =
+            '<tr>' +
+            '<td colspan="7" style="padding:25px;text-align:center;">' +
+            sqreamStatementEscape(rawPlan || "Query Plan 데이터가 없습니다.") +
+            '</td>' +
+            '</tr>';
+    }
+
+    $("#sqreamStatementPlanBody").html(html);
+}
+// ===== 20260908 추가 끝 : Rows / Chunks / Chunk Per Rows / Plan Time 개별 컬럼 출력 =====
+
+    function switchSqreamStatementTab(tab){
+      var sql=(tab==="sql");
+
+      $("#sqreamStatementSqlTab").toggleClass("on",sql);
+      $("#sqreamStatementPlanTab").toggleClass("on",!sql);
+
+      $("#sqreamStatementSqlPane").toggleClass("on",sql);
+      $("#sqreamStatementPlanPane").toggleClass("on",!sql);
+    }
+
+    function closeSqreamStatementDetail(){
+      $("#sqreamStatementDetailModal").removeClass("on");
+      $("body").css("overflow","auto");
+    }
+
+    function sqreamStatementEscape(v){
+      if(v===null||v===undefined||v==="") return "-";
+      return $.jgrid.htmlEncode(String(v));
+    }
+    // ===== 20260902 추가 끝 : Statement ID 클릭 -> Connection ID + Statement ID로 Worker Log 조회 =====
+
+
+    // ===== 20260902 추가 시작 : 메인 조회 Grid 화면 중앙 정렬 =====
+    function centerSqreamMainGrid(gridId){
+      var $grid=$(gridId);
+      if(!$grid.length) return;
+
+      var $wrapper=$grid.closest(".sqream-main-grid-center");
+      if(!$wrapper.length){
+        $wrapper=$grid.closest(".ui-jqgrid").parent();
+      }
+
+      var availableWidth=$wrapper.width();
+      if(!availableWidth || availableWidth<=0) return;
+
+      /*
+       * Node/Process 조회화면과 동일하게 부모 영역 폭을 기준으로
+       * jqGrid 폭을 다시 계산한다.
+       */
+      $grid.jqGrid("setGridWidth",availableWidth,true);
+
+      var $jq=$grid.closest(".ui-jqgrid");
+      $jq.css({
+        "margin-left":"auto",
+        "margin-right":"auto"
+      });
+    }
+    // ===== 20260902 추가 끝 : 메인 조회 Grid 화면 중앙 정렬 =====
+
+
+    // ===== 20260902 추가 시작 : workerLogGrid 최초/리사이즈 중앙 정렬 =====
+    $(function(){
+      setTimeout(function(){ centerSqreamMainGrid("#workerLogGrid"); },100);
+    });
+
+    $(window).off("resize.sqreamCenter_workerLogGrid")
+             .on("resize.sqreamCenter_workerLogGrid",function(){
+                centerSqreamMainGrid("#workerLogGrid");
+             });
+    // ===== 20260902 추가 끝 : workerLogGrid 최초/리사이즈 중앙 정렬 =====
+
+</script>

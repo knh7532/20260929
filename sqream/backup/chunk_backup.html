@@ -1,0 +1,343 @@
+<style type="text/css">
+    .content {
+        max-width: 1800px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .global-uuid-link { color:#0066cc !important;text-decoration:underline !important;cursor:pointer; }
+    #chunkGrid td { white-space:nowrap; }
+    #chunkPager .ui-pg-table { width:auto !important;margin:0 auto !important; }
+    .sqream-detail .m_modal_container {
+        width:980px !important;
+        max-width:980px !important;
+        min-width:980px !important;
+        max-height:92vh !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+    .sqream-detail .m_modal_body {
+        max-height:calc(92vh - 70px);
+        overflow-y:auto;
+        box-sizing:border-box;
+    }
+    .sqream-detail-summary {
+        margin:0 0 14px 0;
+        padding:13px 15px !important;
+        border:1px solid #ddd;
+        border-radius:4px;
+        background:#fafafa;
+        font-size:15px !important;
+        color:#555;
+    }
+    .sqream-detail-record {
+        margin-bottom:18px;
+        border:1px solid #dcdcdc;
+        border-radius:4px;
+        overflow:hidden;
+        background:#fff;
+    }
+    .sqream-detail-table {
+        width:100%;
+        border-collapse:collapse;
+        table-layout:fixed;
+    }
+    .sqream-detail-table col.detail-label-col {
+        width:190px !important;
+    }
+    .sqream-detail-table th,
+    .sqream-detail-table td {
+        background:#fff;
+        color:#333;
+        word-break:break-all;
+        white-space:normal;
+    }
+    .sqream-detail-table th {
+        background:#f7f7fb;
+        color:#64718a;
+        font-weight:600;
+        text-align:center;
+    }
+    .sqream-detail-table td { background:#fff;color:#333;word-break:break-all;white-space:normal; }
+    .sqream-detail-value-box {
+        width:100%;
+        min-height:0 !important;
+        padding:0 !important;
+        border:0 !important;
+        border-radius:0 !important;
+        background:transparent !important;
+        box-sizing:border-box;
+        line-height:20px;
+        font-size:14px !important;
+        white-space:pre-wrap;
+    }
+
+    .sqream-detail .m_modal_header .tit {
+        font-size:22px !important;
+    }
+    .sqream-detail-table tr:last-child th,
+    .sqream-detail-table tr:last-child td {
+        border-bottom:0;
+    }
+
+
+    /* ===== 메인 조회 Grid 중앙 정렬: Metrics Process와 동일 ===== */
+    .chunk-grid-shell {
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box;
+    }
+
+    #gbox_chunkGrid {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    #gbox_chunkGrid .ui-jqgrid-htable th,
+    #gbox_chunkGrid .ui-jqgrid-htable th div {
+        text-align: center !important;
+    }
+
+    #chunkPager {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    #chunkPager .ui-pg-table {
+        width: auto !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+
+    /* ===== 검색영역: Metrics Node HTML과 동일 ===== */
+    .trace_search .top {
+        display: flex;
+        align-items: flex-end;
+        width: 100%;
+        gap: 38px;
+        flex-wrap: nowrap;
+    }
+
+    .trace_search .search-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .trace_search .search-group > .tit {
+        height: 22px;
+        line-height: 22px;
+        margin: 0 0 8px 0 !important;
+    }
+
+    .trace_search .control-row {
+        height: 48px;
+        display: flex;
+        align-items: center;
+    }
+
+    .trace_search .datepicker_wrap {
+        flex: 0 0 465px;
+        min-width: 465px;
+    }
+
+    .trace_search .datepicker_wrap .input_box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100% !important;
+        height: 48px;
+        gap: 10px;
+        margin: 0 !important;
+    }
+
+    .trace_search .datepicker_wrap .input_box input {
+        width: 220px !important;
+        height: 48px !important;
+        box-sizing: border-box;
+    }
+
+    .trace_search .metrics-middle {
+        flex: 1 1 auto;
+        min-width: 360px;
+        max-width: 720px;
+    }
+
+    .trace_search .metrics-middle .input_box {
+        width: 100% !important;
+        height: 48px;
+        margin: 0 !important;
+        display: flex;
+        align-items: center;
+    }
+
+    .trace_search .metrics-middle .input_box input {
+        width: 100% !important;
+        height: 48px !important;
+        box-sizing: border-box;
+    }
+
+    .trace_search .btn_area {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex: 0 0 auto;
+        width: auto !important;
+        height: 48px;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .trace_search .btn_area button {
+        height: 48px;
+    }
+
+</style>
+
+<div class="container"><div class="content trace">
+    <h2>SQream Chunk 조회</h2>
+    <div class="trace_search"><div class="top">
+        <div class="datepicker_wrap search-group"><p class="tit">조회기간</p><div class="input_box control-row">
+            <input type="text" class="m_input datepicker date time" id="chunkSearchStart"/><span>-</span>
+            <input type="text" class="m_input datepicker date time" id="chunkSearchEnd"/></div></div>
+        <div class="middle metrics-middle search-group"><p class="tit">검색</p><div class="input_box control-row">
+            <input type="text" class="m_input" id="chunkSearchKeyword" placeholder="Global UUID / Server ID / DB / Schema / Table"
+                   onkeydown="if(event.keyCode===13) searchChunk();"/></div></div>
+        <div class="btn_area"><button type="button" class="btn_red" style="border-radius:7px;width:62px" onclick="searchChunk();">검색</button></div>
+    </div></div>
+    <div class="width1 grid_wrap textleft chunk-grid-shell">
+        <table id="chunkGrid"></table><div id="chunkPager"></div></div>
+</div></div>
+
+<div id="chunkDetailModal" class="m_modal sqream-detail"><div class="m_modal_container">
+    <div class="m_modal_header"><h2 class="tit">SQream Chunk 상세조회</h2><p class="m_modal_close" onclick="closeChunkDetail();"></p></div>
+    <div class="m_modal_body"><div id="chunkDetailSummary" class="sqream-detail-summary"></div>
+        <div id="chunkDetailBody"></div><div class="modal_btn_area">
+            <button class="modal_btn_gray" onclick="closeChunkDetail();" type="button">닫기</button></div></div>
+</div></div>
+
+<script>
+    "use strict";
+    var chunkVars={baseUrl:"/api/aisqreamboard/chunk",grid:$("#chunkGrid")};
+    $(function(){
+     var end=new Date(),start=new Date(); start.setHours(start.getHours()-1);
+     util.datetimePicker($("#chunkSearchStart"),start); util.datetimePicker($("#chunkSearchEnd"),end);
+     initChunkGrid(); searchChunk();
+    });
+    function initChunkGrid(){
+     util.jqGrid(chunkVars.grid,{datatype:"local",rownumbers:true,rownumWidth:32,
+     // ===== 20260901 수정 시작 : MetricsProcess와 동일한 메인 Grid 폭 설정 =====
+     shrinkToFit:true,autowidth:true,
+     // ===== 20260901 수정 끝 : MetricsProcess와 동일한 메인 Grid 폭 설정 =====
+     colNames:["Global UUID","수집시간","Table ID","Database Name","Schema Name","Table Name","Column Count","Total Rows","Total Chunks","90~100%","80~90%","70~80%","60~70%","50~60%","40~50%","30~40%","20~30%","10~20%","0~10%","No Deletion","Some Deletion","All Deletion","Check Time","Compressed Size","Uncompressed Size","Compression Ratio"],
+ colModel:[
+{name:"globalUuid",width:230,align:"center",formatter:function(v,opt,row){if(!v)return "";return '<a class="global-uuid-link" onclick="viewChunkDetail(\''+String(row.id).replace(/\'/g,"\\'")+'\',\''+String(v).replace(/\'/g,"\\'")+'\')">'+$.jgrid.htmlEncode(v)+"</a>";}},
+{name:"collectTime",width:155,align:"center",formatter:formatSqDateTime},
+{name:"tableId",width:120,align:"center",formatter:formatSqRawInteger},
+{name:"databaseName",width:140,align:"center"},
+{name:"schemaName",width:130,align:"center"},
+{name:"tableName",width:150,align:"center"},
+{name:"columnCount",width:120,align:"center",formatter:formatSqNumber},
+{name:"totalRows",width:130,align:"center",formatter:formatSqNumber},
+{name:"totalChunks",width:120,align:"center",formatter:formatSqNumber},
+{name:"pct90100",width:110,align:"center",formatter:formatSqNumber},
+{name:"pct8090",width:110,align:"center",formatter:formatSqNumber},
+{name:"pct7080",width:110,align:"center",formatter:formatSqNumber},
+{name:"pct6070",width:110,align:"center",formatter:formatSqNumber},
+{name:"pct5060",width:110,align:"center",formatter:formatSqNumber},
+{name:"pct4050",width:110,align:"center",formatter:formatSqNumber},
+{name:"pct3040",width:110,align:"center",formatter:formatSqNumber},
+{name:"pct2030",width:110,align:"center",formatter:formatSqNumber},
+{name:"pct1020",width:110,align:"center",formatter:formatSqNumber},
+{name:"pct010",width:110,align:"center",formatter:formatSqNumber},
+{name:"noDeletionCnt",width:120,align:"center",formatter:formatSqNumber},
+{name:"someDeletionCnt",width:125,align:"center",formatter:formatSqNumber},
+{name:"allDeletionCnt",width:120,align:"center",formatter:formatSqNumber},
+{name:"checkTime",width:155,align:"center",formatter:formatSqDateTime},
+{name:"compressedTableSizeByte",width:145,align:"center",formatter:formatSqBytesGB},
+{name:"uncompressedTableSizeByte",width:155,align:"center",formatter:formatSqBytesGB},
+{name:"compressionRatio",width:135,align:"center"}
+],
+ rowNum:20,rowList:[20,50,100,200],pager:"#chunkPager"});
+    }
+    function searchChunk(){
+     var url=chunkVars.baseUrl+"?page=0&size=200";
+     var start=normalizeDate($("#chunkSearchStart").val()),end=normalizeDate($("#chunkSearchEnd").val()),keyword=$("#chunkSearchKeyword").val();
+     if(start) url+="&startTime="+encodeURIComponent(start); if(end) url+="&endTime="+encodeURIComponent(end); if(keyword) url+="&keyword="+encodeURIComponent(keyword);
+     $.get(url,function(data){
+      chunkVars.grid.clearGridData();
+      chunkVars.grid.setGridParam({data:data.content||[],datatype:"local"}).trigger("reloadGrid");
+      // ===== 20260901 추가 시작 : MetricsProcess와 동일하게 조회 후 Grid 폭 재조정 =====
+      centerChunkGrid();
+      // ===== 20260901 추가 끝 : MetricsProcess와 동일하게 조회 후 Grid 폭 재조정 =====
+     })
+     .fail(function(){alert("SQream Chunk 조회에 실패했습니다.");});
+    }
+
+    // ===== 20260901 추가 시작 : MetricsProcess와 동일한 메인 Grid 폭 조정 함수 =====
+    function centerChunkGrid(){
+     var $wrap=$(".chunk-grid-shell");
+     var width=$wrap.width();
+     if(width && chunkVars.grid[0] && chunkVars.grid[0].grid){
+      chunkVars.grid.jqGrid("setGridWidth",width,true);
+     }
+    }
+    // ===== 20260901 추가 끝 : MetricsProcess와 동일한 메인 Grid 폭 조정 함수 =====
+    function viewChunkDetail(id,globalUuid){
+     $.get(chunkVars.baseUrl+"/"+encodeURIComponent(id),function(row){
+      $("#chunkDetailSummary").text("Global UUID: "+(globalUuid||row.globalUuid||"-"));
+      renderChunkDetail(row||{});$("#chunkDetailModal").addClass("on");$("body").css("overflow","hidden");
+     }).fail(function(){alert("상세 조회에 실패했습니다.");});
+    }
+    function renderChunkDetail(row){
+     var html='<div class="sqream-detail-record"><table class="sqream-detail-table"><colgroup><col class="detail-label-col"><col></colgroup><tbody>';
+     html+=sqDetailRow("Server ID",row.serverId);
+     html+=sqDetailRow("수집시간",formatSqDateTime(row.collectTime));
+     html+=sqDetailRow("Hostname",row.hostname);
+     html+=sqDetailRow("Host IP",row.hostip);
+     html+=sqDetailRow("Table ID",formatSqNumber(row.tableId));
+     html+=sqDetailRow("Total Chunks",formatSqNumber(row.totalChunks));
+     html+=sqDetailRow("Database Name",row.databaseName);
+     html+=sqDetailRow("Schema Name",row.schemaName);
+     html+=sqDetailRow("Table Name",row.tableName);
+     html+=sqDetailRow("Column Count",formatSqNumber(row.columnCount));
+     html+=sqDetailRow("Total Rows",formatSqNumber(row.totalRows));
+     html+=sqDetailRow("90~100%",formatSqNumber(row.pct90100));
+     html+=sqDetailRow("80~90%",formatSqNumber(row.pct8090));
+     html+=sqDetailRow("70~80%",formatSqNumber(row.pct7080));
+     html+=sqDetailRow("60~70%",formatSqNumber(row.pct6070));
+     html+=sqDetailRow("50~60%",formatSqNumber(row.pct5060));
+     html+=sqDetailRow("40~50%",formatSqNumber(row.pct4050));
+     html+=sqDetailRow("30~40%",formatSqNumber(row.pct3040));
+     html+=sqDetailRow("20~30%",formatSqNumber(row.pct2030));
+     html+=sqDetailRow("10~20%",formatSqNumber(row.pct1020));
+     html+=sqDetailRow("0~10%",formatSqNumber(row.pct010));
+     html+=sqDetailRow("No Deletion",formatSqNumber(row.noDeletionCnt));
+     html+=sqDetailRow("Some Deletion",formatSqNumber(row.someDeletionCnt));
+     html+=sqDetailRow("All Deletion",formatSqNumber(row.allDeletionCnt));
+     html+=sqDetailRow("Table Create Time",formatSqDateTime(row.tableCreateTime));
+     html+=sqDetailRow("Check Time",formatSqDateTime(row.checkTime));
+     html+=sqDetailRow("Compressed Table Size",formatSqBytesGB(row.compressedTableSizeByte));
+     html+=sqDetailRow("Uncompressed Table Size",formatSqBytesGB(row.uncompressedTableSizeByte));
+     html+=sqDetailRow("Savings Rate(%)",row.savingsRate);
+     html+=sqDetailRow("Compression Ratio",row.compressionRatio);
+     html+=sqDetailRow("Create DT",formatSqDateTime(row.createDt));
+     html+=sqDetailRow("Update DT",formatSqDateTime(row.updateDt));
+     html+='</tbody></table></div>'; $("#chunkDetailBody").html(html);
+    }
+    function closeChunkDetail(){ $("#chunkDetailModal").removeClass("on");$("body").css("overflow","auto"); }
+    function sqDetailRow(label,value){var v=(value===null||value===undefined||value==="")?"-":String(value);return '<tr><th>'+$.jgrid.htmlEncode(label)+'</th><td><div class="sqream-detail-value-box">'+$.jgrid.htmlEncode(v)+'</div></td></tr>';}
+    function formatSqDateTime(v) {
+      if (!v) return "";
+      var value = String(v).replace("T", " ");
+      return value.substring(0, 19);
+    }
+    function formatSqSeconds(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);if(isNaN(n))return v;var d=Math.floor(n/86400);n-=d*86400;var h=Math.floor(n/3600);n-=h*3600;var m=Math.floor(n/60);n-=m*60;var s=Math.round(n*1000)/1000;var a=[];if(d)a.push(d+"일");if(h||d)a.push(h+"시간");if(m||h||d)a.push(m+"분");a.push(s+"초");return a.join(" ");}
+    function formatSqBytesGB(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);if(isNaN(n))return v;return (n/1024/1024/1024).toFixed(2)+" GB";}
+    function formatSqMs(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);return isNaN(n)?v:n.toLocaleString()+" ms";}
+    function formatSqRawInteger(v){if(v===null||v===undefined||v==="")return "";return String(v);}
+    function formatSqNumber(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);return isNaN(n)?v:n.toLocaleString();}
+    function formatSqBool(v){if(v===true)return "Y";if(v===false)return "N";return "";}
+    function normalizeDate(v){if(!v)return "";return String(v).trim().replace("T"," ");}
+</script>

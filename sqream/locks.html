@@ -1,0 +1,56 @@
+<!-- ===== 20260917 추가 시작 : SQream Locks 조회 ===== -->
+<style>
+.sq17-content{max-width:1800px!important;margin:auto}.sq17-search{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:14px}.sq17-item{display:flex;flex-direction:column;gap:5px}.sq17-item .tit{font-size:12px;font-weight:600;margin:0}.sq17-item input{width:165px;height:38px}.sq17-date input{width:220px}.sq17-link{color:#0066cc!important;text-decoration:underline!important;cursor:pointer}.sq17-shell{width:100%!important}.sq17-pager{min-height:58px!important;display:flex!important;align-items:center!important;justify-content:center!important}.sq17-pager .ui-pg-table{width:auto!important;margin:0 auto!important}.sq17-modal .m_modal_container{width:980px!important;max-width:980px!important;max-height:92vh!important;margin:auto}.sq17-modal .m_modal_body{max-height:calc(92vh - 70px);overflow-y:auto}.sq17-detail{width:100%;border-collapse:collapse}.sq17-detail th,.sq17-detail td{border-bottom:1px solid #e4e4e4;padding:11px 14px}.sq17-detail th{width:190px;background:#f7f7fb;color:#64718a;text-align:center}.sq17-pre{white-space:pre-wrap;word-break:break-all;background:#fafafa;border:1px solid #ddd;padding:15px;max-height:420px;overflow:auto;font-family:Consolas,monospace}.sq17-tabs{display:flex;border-bottom:1px solid #ddd}.sq17-tab{height:44px;min-width:150px}.sq17-tab.on{background:#fff;border-top:3px solid #e43d30}.sq17-pane{display:none;padding:16px;border:1px solid #ddd;border-top:0}.sq17-pane.on{display:block}
+
+/* ===== 20260917 수정 시작 : Server Status 화면 배치/페이저 중앙 정렬 동일 적용 ===== */
+.sqream-search-advanced{margin-bottom:14px}.sqream-search-date-row{display:flex;align-items:flex-end;gap:10px;width:100%;margin-bottom:14px;flex-wrap:nowrap}.sqream-search-date-row .datepicker_wrap{flex:0 0 465px;min-width:465px}.sqream-search-date-row .sqream-filter-item{flex:0 0 auto}.sqream-search-date-row .datepicker_wrap .input_box{display:flex;align-items:center;gap:10px;height:48px;margin:0!important}.sqream-search-date-row .datepicker_wrap input{width:220px!important;height:48px!important;box-sizing:border-box}.sqream-filter-grid{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;width:100%}.sqream-filter-item{display:flex;flex-direction:column;gap:5px;min-width:120px;width:auto}.sqream-filter-item>.tit{display:block;height:20px;line-height:20px;margin:0!important;font-size:12px;font-weight:600;color:#555;white-space:nowrap}.sqream-filter-item .input_box{display:flex!important;align-items:center!important;width:auto!important;height:38px!important;margin:0!important}.sqream-filter-item input{width:145px!important;height:38px!important;box-sizing:border-box}.sqream-search-actions{display:flex!important;align-items:center!important;align-self:flex-end!important;gap:10px!important;height:38px!important;width:auto!important;margin:0!important;padding:0!important;flex:0 0 auto!important}.sqream-search-actions button{height:38px!important}.sq17-shell .ui-jqgrid{margin-left:auto!important;margin-right:auto!important}.sq17-shell .ui-jqgrid-htable th,.sq17-shell .ui-jqgrid-htable th div{text-align:center!important}.sq17-pager{width:100%!important;min-height:58px!important;display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important}.sq17-pager .ui-pg-table{width:auto!important;margin:0 auto!important}.sq17-pager td[id$="_left"],.sq17-pager td[id$="_center"],.sq17-pager td[id$="_right"]{position:static!important;float:none!important;width:auto!important;padding:0 3px!important;display:flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important}
+/* ===== 20260917 수정 끝 ===== */
+</style>
+<div class="container"><div class="content trace sq17-content"><h2>AI SQream Locks 조회</h2>
+ <!-- ===== 20260917 수정 시작 : Server Status와 동일한 2단 검색 배치 / Hostname + Statement ID만 유지 ===== -->
+ <div class="trace_search sqream-search-advanced">
+  <div class="sqream-search-date-row">
+   <div class="datepicker_wrap search-group">
+    <p class="tit">조회기간</p>
+    <div class="input_box"><input class="m_input datepicker date time" id="locksStart"><span>-</span><input class="m_input datepicker date time" id="locksEnd"></div>
+   </div>
+   <!-- ===== 20260917 수정 시작 : 조회기간 / Hostname / Statement ID / 검색 한 줄 배치 ===== -->
+   <div class="sqream-filter-item"><p class="tit">Hostname</p><div class="input_box"><input class="m_input" id="locksHostname" onkeydown="if(event.keyCode===13) searchLocks();"></div></div>
+   <div class="sqream-filter-item"><p class="tit">Statement ID</p><div class="input_box"><input type="number" class="m_input" id="locksStatementId" onkeydown="if(event.keyCode===13) searchLocks();"></div></div>
+   <div class="btn_area sqream-search-actions"><button type="button" class="btn_red" style="border-radius:7px;width:62px" onclick="searchLocks()">검색</button></div>
+   <!-- ===== 20260917 수정 끝 ===== -->
+  </div>
+ </div>
+ <!-- ===== 20260917 수정 끝 ===== -->
+ <div class="width1 grid_wrap textleft sq17-shell" id="locksGridShell"><table id="locksGrid"></table><div id="locksPager" class="sq17-pager"></div></div>
+</div></div>
+<div id="locksDetailModal" class="m_modal sq17-modal"><div class="m_modal_container"><div class="m_modal_header"><h2 class="tit">SQream Locks 상세조회</h2><p class="m_modal_close" onclick="closeLocksDetail()"></p></div><div class="m_modal_body"><div id="locksDetailBody"></div><div class="modal_btn_area"><button class="modal_btn_gray" onclick="closeLocksDetail()">닫기</button></div></div></div></div>
+<div id="locksStatementModal" class="m_modal sq17-modal"><div class="m_modal_container"><div class="m_modal_header"><h2 class="tit">SQream Statement 상세조회</h2><p class="m_modal_close" onclick="closeLocksStatement()"></p></div><div class="m_modal_body"><div id="locksStmtSummary" style="padding:13px;background:#fafafa;margin-bottom:14px"></div><div class="sq17-tabs"><button id="locksSqlTab" class="sq17-tab on" onclick="switchLocksTab('sql')">쿼리문</button><button id="locksPlanTab" class="sq17-tab" onclick="switchLocksTab('plan')">실행 계획</button></div><div id="locksSqlPane" class="sq17-pane on"><pre id="locksSql" class="sq17-pre"></pre></div><div id="locksPlanPane" class="sq17-pane"><pre id="locksPlan" class="sq17-pre"></pre></div><div class="modal_btn_area"><button class="modal_btn_gray" onclick="closeLocksStatement()">닫기</button></div></div></div></div>
+<script>
+"use strict";
+var locksVars={baseUrl:"/api/aisqreamboard/locks",grid:$("#locksGrid")};
+$(function(){var e=new Date(),s=new Date();s.setHours(s.getHours()-1);util.datetimePicker($("#locksStart"),s);util.datetimePicker($("#locksEnd"),e);initLocksGrid();searchLocks();$(window).on("resize.locks",centerLocksGrid);});
+function initLocksGrid(){util.jqGrid(locksVars.grid,{datatype:"local",rownumbers:true,rownumWidth:32,shrinkToFit:true,autowidth:true,
+ // ===== 20260917 수정 시작 : Locks Statement ID 컬럼 추가 / Statement 상세 링크 이동 =====
+ colNames:["Global UUID","Server ID","Hostname","Host IP","Statement ID","Locked Object","Statement Active","Snapshot Active","Statement String"],
+ colModel:[
+  {name:"globalUuid",width:210,align:"center",formatter:function(v){return v?'<a class="sq17-link" onclick="viewLocksDetail(\''+sq17Js(v)+'\')">'+$.jgrid.htmlEncode(v)+'</a>':"";}},
+  {name:"serverId",width:120,align:"center"},
+  {name:"hostname",width:140,align:"center"},
+  {name:"hostip",width:115,align:"center"},
+  {name:"statementId",width:95,align:"center",formatter:function(v){if(v==null||v==="")return "";return '<a class="sq17-link" onclick="viewLocksStatement(event,\''+sq17Js(v)+'\')">'+$.jgrid.htmlEncode(String(v))+'</a>';}},
+  {name:"lockedObject",width:210},
+  {name:"statementActive",width:110,align:"center",formatter:sq17Bool},
+  {name:"snapshotActive",width:110,align:"center",formatter:sq17Bool},
+  {name:"statementString",width:330,formatter:function(v){return v==null||v===""?"":$.jgrid.htmlEncode(String(v));}}
+ ],rowNum:20,rowList:[20,50,100,200],pager:"#locksPager"});
+ // ===== 20260917 수정 끝 =====
+}
+function searchLocks(){var u=locksVars.baseUrl+"?page=0&size=200",p={startTime:sq17Date($("#locksStart").val()),endTime:sq17Date($("#locksEnd").val()),hostname:$("#locksHostname").val(),statementId:$("#locksStatementId").val()};$.each(p,function(k,v){if(v!=null&&String(v).trim()!=="")u+="&"+encodeURIComponent(k)+"="+encodeURIComponent(String(v).trim());});$.get(u,function(d){locksVars.grid.clearGridData();locksVars.grid.setGridParam({data:d.content||[],datatype:"local"}).trigger("reloadGrid");centerLocksGrid();});}
+function centerLocksGrid(){var w=$("#locksGridShell").width();if(w)locksVars.grid.jqGrid("setGridWidth",w,true);}
+function viewLocksDetail(uuid){$("#locksDetailBody").html("조회 중...");$("#locksDetailModal").addClass("on");$.get(locksVars.baseUrl+"/"+encodeURIComponent(uuid),function(rows){var h="";$.each(rows||[],function(i,r){h+='<h3>#'+(i+1)+'</h3><table class="sq17-detail"><tbody>'+sq17Row("ID",r.id)+sq17Row("Global UUID",r.globalUuid)+sq17Row("Server ID",r.serverId)+sq17Row("Statement String",r.statementString)+sq17Row("Server",r.server)+sq17Row("Locked Object",r.lockedObject)+sq17Row("Host IP",r.hostip)+sq17Row("Statement Active",sq17Bool(r.statementActive))+sq17Row("Statement ID",r.statementId)+sq17Row("Snapshot Active",sq17Bool(r.snapshotActive))+sq17Row("Hostname",r.hostname)+sq17Row("Port",r.port)+sq17Row("Lock Mode",r.lockMode)+sq17Row("Collect Time",sq17Time(r.collectTime))+sq17Row("Lock Start Time",sq17Time(r.lockStartTime))+sq17Row("Username",r.username)+sq17Row("Statement Start Time",sq17Time(r.statementStartTime))+sq17Row("Create DT",sq17Time(r.createDt))+sq17Row("Update DT",sq17Time(r.updateDt))+sq17Row("SQL Type",r.sqlType)+sq17Row("SQL Params",r.sqlParams)+sq17Row("User ID",r.userId)+"</tbody></table>";});$("#locksDetailBody").html(h||"조회된 상세 데이터가 없습니다.");});}
+function viewLocksStatement(e,id){if(e){e.preventDefault();e.stopPropagation();}$.get(locksVars.baseUrl+"/statement_detail?statementId="+encodeURIComponent(id),function(r){$("#locksStmtSummary").text("Statement ID : "+id);$("#locksSql").text(r.statement||"Statement 데이터가 없습니다.");$("#locksPlan").text(r.queryPlan||"Query Plan 데이터가 없습니다.");switchLocksTab("sql");$("#locksStatementModal").addClass("on");});}
+function switchLocksTab(t){var s=t==="sql";$("#locksSqlTab").toggleClass("on",s);$("#locksPlanTab").toggleClass("on",!s);$("#locksSqlPane").toggleClass("on",s);$("#locksPlanPane").toggleClass("on",!s);}function closeLocksDetail(){$("#locksDetailModal").removeClass("on")}function closeLocksStatement(){$("#locksStatementModal").removeClass("on")}
+function sq17Row(k,v){return '<tr><th>'+$.jgrid.htmlEncode(k)+'</th><td>'+$.jgrid.htmlEncode(v==null||v===""?"-":String(v))+'</td></tr>'}function sq17Time(v){return v?String(v).replace("T"," ").substring(0,19):"-"}function sq17Bool(v){if(v===true)return "Y";if(v===false)return "N";return ""}function sq17Js(v){return String(v==null?"":v).replace(/\\/g,"\\\\").replace(/'/g,"\\'")}function sq17Date(v){if(!v)return "";v=String(v).trim();return /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(v)?v+":00":v}
+</script>
+<!-- ===== 20260917 추가 끝 : SQream Locks 조회 ===== -->

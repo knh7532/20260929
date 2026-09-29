@@ -1,0 +1,640 @@
+<!-- ===== 20260903 추가 시작 : MetricsNode 동일 스타일 공통 ===== -->
+<style type="text/css">
+    .content {
+        max-width:1800px !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+    .trace_search .top {
+        display:flex;
+        align-items:flex-end;
+        width:100%;
+        gap:38px;
+        flex-wrap:nowrap;
+    }
+    .trace_search .search-group {
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-end;
+    }
+    .trace_search .search-group > .tit {
+        height:22px;
+        line-height:22px;
+        margin:0 0 8px 0 !important;
+    }
+    .trace_search .control-row {
+        height:48px;
+        display:flex;
+        align-items:center;
+    }
+    .trace_search .datepicker_wrap {
+        flex:0 0 465px;
+        min-width:465px;
+    }
+    .trace_search .datepicker_wrap .input_box {
+        display:flex;
+        align-items:center;
+        width:100% !important;
+        height:48px;
+        gap:10px;
+        margin:0 !important;
+    }
+    .trace_search .datepicker_wrap .input_box input {
+        width:220px !important;
+        height:48px !important;
+        box-sizing:border-box;
+    }
+    .trace_search .metrics-middle {
+        flex:1 1 auto;
+        min-width:360px;
+        max-width:720px;
+    }
+    .trace_search .metrics-middle .input_box {
+        width:100% !important;
+        height:48px;
+        margin:0 !important;
+        display:flex;
+        align-items:center;
+    }
+    .trace_search .metrics-middle .input_box input {
+        width:100% !important;
+        height:48px !important;
+        box-sizing:border-box;
+    }
+    .trace_search .btn_area {
+        display:flex;
+        align-items:center;
+        gap:18px;
+        flex:0 0 auto;
+        width:auto !important;
+        height:48px;
+        padding:0 !important;
+        margin:0 !important;
+    }
+    .trace_search .btn_area button { height:48px; }
+
+    .global-uuid-link {
+        color:#0066cc !important;
+        text-decoration:underline !important;
+        cursor:pointer;
+    }
+
+    .sqream-grid-shell {
+        width:100% !important;
+        margin:0 auto !important;
+        box-sizing:border-box;
+    }
+    .sqream-grid-shell .ui-jqgrid {
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+    .sqream-grid-shell .ui-jqgrid-htable th,
+    .sqream-grid-shell .ui-jqgrid-htable th div {
+        text-align:center !important;
+    }
+
+    .sqream-pager {
+        width:100% !important;
+        min-height:58px !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+        position:relative !important;
+    }
+    .sqream-pager .ui-pg-table {
+        width:auto !important;
+        margin:0 auto !important;
+    }
+    .sqream-pager td[id$="_left"],
+    .sqream-pager td[id$="_center"],
+    .sqream-pager td[id$="_right"] {
+        position:static !important;
+        float:none !important;
+        width:auto !important;
+        padding:0 3px !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+        white-space:nowrap !important;
+    }
+
+    /* MetricsNode 상세 팝업과 동일 */
+    .metrics-detail-vertical .m_modal_container {
+        width:980px !important;
+        max-width:980px !important;
+        min-width:980px !important;
+        max-height:92vh !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+    .metrics-detail-vertical .m_modal_header .tit {
+        font-size:22px !important;
+    }
+    .metrics-detail-vertical .m_modal_body {
+        max-height:calc(92vh - 70px);
+        overflow-y:auto;
+        box-sizing:border-box;
+    }
+    .metrics-detail-summary {
+        margin:0 0 14px 0;
+        padding:13px 15px !important;
+        border:1px solid #ddd;
+        border-radius:4px;
+        background:#fafafa;
+        font-size:15px !important;
+        color:#555;
+    }
+    .metrics-detail-record {
+        margin-bottom:18px;
+        border:1px solid #dcdcdc;
+        border-radius:4px;
+        overflow:hidden;
+        background:#fff;
+    }
+    .metrics-detail-record-title {
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        min-height:42px;
+        padding:0 14px;
+        background:#f3f4f8;
+        border-bottom:1px solid #ddd;
+        box-sizing:border-box;
+    }
+    .metrics-detail-record-title .record-no {
+        font-weight:700;
+        color:#333;
+    }
+    .metrics-detail-record-title .record-point {
+        font-size:13px;
+        font-weight:700;
+        color:#e43d30;
+    }
+    .metrics-detail-table {
+        width:100%;
+        border-collapse:collapse;
+        table-layout:fixed;
+    }
+    .metrics-detail-table col.detail-label-col {
+        width:190px !important;
+    }
+    .metrics-detail-table th,
+    .metrics-detail-table td {
+        border-bottom:1px solid #e4e4e4;
+        padding:12px 14px !important;
+        font-size:14px !important;
+        vertical-align:middle;
+        box-sizing:border-box;
+    }
+    .metrics-detail-table tr:last-child th,
+    .metrics-detail-table tr:last-child td {
+        border-bottom:0;
+    }
+    .metrics-detail-table th {
+        background:#f7f7fb;
+        color:#64718a;
+        font-weight:600;
+        text-align:center;
+    }
+    .metrics-detail-table td {
+        background:#fff;
+        color:#333;
+        word-break:break-all;
+        white-space:normal;
+    }
+    .metrics-detail-value-box {
+        width:100%;
+        min-height:0 !important;
+        padding:0 !important;
+        border:0 !important;
+        background:transparent !important;
+        line-height:20px;
+        font-size:14px !important;
+        white-space:pre-wrap;
+    }
+    .metrics-detail-empty {
+        padding:35px 0;
+        text-align:center;
+        color:#777;
+    }
+
+    /* ===== 20260907 추가 시작 : SQream 메인 검색조건 UI - Metrics Node 스타일로 폭 축소 ===== */
+    .sqream-search-advanced {
+        margin-bottom: 14px;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row {
+        display:flex;
+        align-items:flex-end;
+        gap:18px;
+        width:100%;
+        margin-bottom:12px;
+        flex-wrap:wrap;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row .datepicker_wrap {
+        flex:0 0 465px;
+        min-width:465px;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row .datepicker_wrap .input_box {
+        display:flex;
+        align-items:center;
+        gap:10px;
+        height:48px;
+        margin:0 !important;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row .datepicker_wrap input {
+        width:220px !important;
+        height:48px !important;
+        box-sizing:border-box;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row .btn_area {
+        display:flex;
+        align-items:center;
+        gap:10px;
+        height:48px;
+        padding:0 !important;
+        margin:0 !important;
+    }
+
+    .sqream-search-advanced .sqream-search-date-row .btn_area button {
+        height:48px;
+    }
+
+    /* Metrics Node와 동일하게 고정폭 검색칸 + flex wrap */
+    .sqream-filter-grid {
+        display:flex;
+        align-items:flex-end;
+        gap:10px;
+        flex-wrap:wrap;
+        width:100%;
+    }
+
+    .sqream-filter-item {
+        display:flex;
+        flex-direction:column;
+        gap:5px;
+        min-width:120px;
+        width:auto;
+    }
+
+    .sqream-filter-item > .tit {
+        display:block;
+        height:20px;
+        line-height:20px;
+        margin:0 !important;
+        font-size:12px;
+        font-weight:600;
+        color:#555;
+        white-space:nowrap;
+    }
+
+    .sqream-filter-item .input_box {
+        display:flex !important;
+        align-items:center !important;
+        width:auto !important;
+        height:38px !important;
+        margin:0 !important;
+        gap:6px;
+    }
+
+    .sqream-filter-item input,
+    .sqream-filter-item select {
+        width:145px !important;
+        height:38px !important;
+        box-sizing:border-box;
+        min-width:0;
+    }
+
+    .sqream-filter-item select {
+        width:125px !important;
+    }
+
+    .sqream-threshold-wrap {
+        display:inline-flex;
+        align-items:center;
+        width:auto;
+        gap:6px;
+    }
+
+    .sqream-threshold-wrap input {
+        width:112px !important;
+        flex:0 0 112px;
+    }
+
+    .sqream-threshold-unit {
+        flex:0 0 auto;
+        color:#555;
+        font-size:12px;
+        font-weight:600;
+        white-space:nowrap;
+    }
+
+    /* 긴 문자열 조건만 약간 넓게 */
+    #workerLogWorkerHostname,
+    #workerLogDatabaseName,
+    #serverStatusDatabaseName,
+    #sqreamTableDatabaseName,
+    #queryRuntimeUserName {
+        width:165px !important;
+    }
+
+    #workerLogMessage,
+    #serverStatusStatement {
+        width:205px !important;
+    }
+    /* ===== 20260907 추가 끝 : SQream 메인 검색조건 UI - Metrics Node 스타일로 폭 축소 ===== */
+
+    /* ===== 20260908 추가 시작 : 검색 버튼을 마지막 검색조건 우측에 배치 ===== */
+.sqream-filter-grid .sqream-search-actions {
+    display: flex !important;
+    align-items: center !important;
+    align-self: flex-end !important;
+    gap: 10px !important;
+
+    height: 38px !important;
+    width: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    flex: 0 0 auto !important;
+}
+
+.sqream-filter-grid .sqream-search-actions button {
+    height: 38px !important;
+}
+/* ===== 20260908 추가 끝 : 검색 버튼을 마지막 검색조건 우측에 배치 ===== */
+
+</style>
+<!-- ===== 20260903 추가 끝 : MetricsNode 동일 스타일 공통 ===== -->
+
+<!-- ===== 20260903 추가 시작 : SQream Table 조회 화면 ===== -->
+<div class="container">
+    <div class="content trace">
+        <h2>AI SQream Table 조회</h2>
+
+        <!-- ===== 20260907 추가 시작 : Sqream Table 검색 UI ===== -->
+        <div class="trace_search sqream-search-advanced">
+            <div class="sqream-search-date-row">
+            <div class="datepicker_wrap search-group">
+                <p class="tit">조회기간</p>
+                <div class="input_box">
+                    <input type="text" class="m_input datepicker date time" id="sqreamTableSearchStart"/>
+                    <span>-</span>
+                    <input type="text" class="m_input datepicker date time" id="sqreamTableSearchEnd"/>
+                </div>
+            </div>
+<!--            <div class="btn_area">-->
+<!--                <button type="button" class="btn_red" style="border-radius:7px;width:62px" onclick="searchSqreamTable();">검색</button>-->
+<!--                -->
+<!--            </div>-->
+        </div>
+            <div class="sqream-filter-grid"><div class="sqream-filter-item">
+                    <p class="tit">Hostname</p>
+                    <div class="input_box"><input type="text" class="m_input" id="sqreamTableHostname" onkeydown="if(event.keyCode===13) searchSqreamTable();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Database Name</p>
+                    <div class="input_box"><input type="text" class="m_input" id="sqreamTableDatabaseName" onkeydown="if(event.keyCode===13) searchSqreamTable();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Schema Name</p>
+                    <div class="input_box"><input type="text" class="m_input" id="sqreamTableSchemaName" onkeydown="if(event.keyCode===13) searchSqreamTable();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Table Name</p>
+                    <div class="input_box"><input type="text" class="m_input" id="sqreamTableTableName" onkeydown="if(event.keyCode===13) searchSqreamTable();"/></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Row Count</p>
+                    <div class="input_box"><div class="sqream-threshold-wrap"><input type="number" class="m_input" id="sqreamTableRowCount" min="0" step="0.01" inputmode="decimal" onkeydown="if(event.keyCode===13) searchSqreamTable();"/><span class="sqream-threshold-unit">이상</span></div></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Deleted Row Count</p>
+                    <div class="input_box"><div class="sqream-threshold-wrap"><input type="number" class="m_input" id="sqreamTableDeletedRowCount" min="0" step="0.01" inputmode="decimal" onkeydown="if(event.keyCode===13) searchSqreamTable();"/><span class="sqream-threshold-unit">이상</span></div></div>
+                </div><div class="sqream-filter-item">
+                    <p class="tit">Needs Rechunk</p>
+                    <div class="input_box"><select class="m_input" id="sqreamTableNeedsRechunk"><option value="">전체</option><option value="true">true</option><option value="false">false</option></select></div>
+                </div></div>
+            <!-- ===== 20260908 추가 시작 : SQream Table 검색 버튼 Needs Rechunk 우측 배치 ===== -->
+            <div class="btn_area sqream-search-actions">
+                <button type="button"
+                        class="btn_red"
+                        style="border-radius:7px;width:62px"
+                        onclick="searchSqreamTable();">검색</button>
+            </div>
+            <!-- ===== 20260908 추가 끝 : SQream Table 검색 버튼 Needs Rechunk 우측 배치 ===== -->
+        </div>
+        <!-- ===== 20260907 추가 끝 : Sqream Table 검색 UI ===== -->
+    <div class="width1 grid_wrap textleft sqream-grid-shell" id="sqreamTableGridShell">
+            <table id="sqreamTableGrid"></table>
+            <div id="sqreamTablePager" class="sqream-pager"></div>
+        </div>
+    </div>
+</div>
+
+<div id="sqreamTableDetailModal" class="m_modal metrics-detail-vertical">
+    <div class="m_modal_container">
+        <div class="m_modal_header">
+            <h2 class="tit">SQream Table 상세조회</h2>
+            <p class="m_modal_close" onclick="closeSqreamTableDetail();"></p>
+        </div>
+        <div class="m_modal_body">
+            <div id="selectedSqreamTableUuid" class="metrics-detail-summary"></div>
+            <div id="sqreamTableDetailList">
+                <div class="metrics-detail-empty">조회된 상세 데이터가 없습니다.</div>
+            </div>
+            <div class="modal_btn_area">
+                <button class="modal_btn_gray" type="button"
+                        onclick="closeSqreamTableDetail();">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+"use strict";
+
+// ===== 20260903 추가 시작 : Sqream Table jqGrid / 상세조회 =====
+var sqreamTableVars={
+    baseUrl:"/api/aisqreamboard/table",
+    grid:$("#sqreamTableGrid")
+};
+
+$(function(){
+    var end=new Date(),start=new Date();
+    start.setHours(start.getHours()-1);
+    util.datetimePicker($("#sqreamTableSearchStart"),start);
+    util.datetimePicker($("#sqreamTableSearchEnd"),end);
+    initSqreamTableGrid();
+    searchSqreamTable();
+
+    $(window).on("resize.sqreamTable",function(){
+        centerSqreamTableGrid();
+    });
+});
+
+function initSqreamTableGrid(){
+    util.jqGrid(sqreamTableVars.grid,{
+        datatype:"local",
+        rownumbers:true,
+        rownumWidth:32,
+        shrinkToFit:true,
+        autowidth:true,
+        colNames:[
+            "Global UUID","수집시간","Hostname","Host IP","Database",
+            "Table ID","Schema","Table Name","Row Count Valid","Row Count",
+            "Deleted Rows","Deleted Ratio(%)","Row Consistent","Needs Rechunk","Full Table Name"
+        ],
+        colModel:[
+            {name:"globalUuid",width:210,align:"center",formatter:function(v){
+                if(!v)return "";
+                return '<a class="global-uuid-link" onclick="viewSqreamTableDetail(\''+
+                    escapeSqJs(v)+'\')">'+$.jgrid.htmlEncode(v)+'</a>';
+            }},
+            {name:"collectTime",width:145,align:"center",formatter:formatSqDateTime},
+            {name:"hostname",width:100,align:"center"},
+            {name:"hostip",width:105,align:"center"},
+            {name:"databaseName",width:100,align:"center"},
+            {name:"tableId",width:85,align:"center",formatter:formatRawInteger},
+            {name:"schemaName",width:95,align:"center"},
+            {name:"tableName",width:115,align:"center"},
+            {name:"rowCountValid",width:105,align:"center",formatter:formatPlainNumber},
+            {name:"rowCount",width:105,align:"center",formatter:formatPlainNumber},
+            {name:"deletedRowCount",width:100,align:"center",formatter:formatPlainNumber},
+            {name:"deletedRowRatio",width:105,align:"center",formatter:formatPercent2},
+            {name:"rowConsistent",width:105,align:"center",formatter:formatBoolean},
+            {name:"needsRechunk",width:105,align:"center",formatter:formatBoolean},
+            {name:"fullTableName",width:210,align:"left"}
+        ],
+        rowNum:20,
+        rowList:[20,50,100,200],
+        pager:"#sqreamTablePager"
+    });
+}
+
+function searchSqreamTable(){
+    var url=sqreamTableVars.baseUrl+"?page=0&size=200";
+    var start=normalizeDate($("#sqreamTableSearchStart").val());
+    var end=normalizeDate($("#sqreamTableSearchEnd").val());
+    if(start)url+="&startTime="+encodeURIComponent(start);
+    if(end)url+="&endTime="+encodeURIComponent(end);
+
+    // ===== 20260907 추가 시작 : Sqream Table 검색 파라미터 =====
+    var params={
+        hostname:$("#sqreamTableHostname").val(),
+        databaseName:$("#sqreamTableDatabaseName").val(),
+        schemaName:$("#sqreamTableSchemaName").val(),
+        tableName:$("#sqreamTableTableName").val(),
+        rowCount:$("#sqreamTableRowCount").val(),
+        deletedRowCount:$("#sqreamTableDeletedRowCount").val(),
+        needsRechunk:$("#sqreamTableNeedsRechunk").val()
+    };
+    $.each(params,function(k,v){
+        if(v!==undefined&&v!==null&&String(v).trim()!==""){
+            url+="&"+encodeURIComponent(k)+"="+encodeURIComponent(String(v).trim());
+        }
+    });
+    // ===== 20260907 추가 끝 : Sqream Table 검색 파라미터 =====
+
+    $.get(url,function(data){
+        sqreamTableVars.grid.clearGridData();
+        sqreamTableVars.grid.setGridParam({
+            data:data.content||[],
+            datatype:"local"
+        }).trigger("reloadGrid");
+        centerSqreamTableGrid();
+    });
+}
+
+function centerSqreamTableGrid(){
+    var width=$("#sqreamTableGridShell").width();
+    if(width)sqreamTableVars.grid.jqGrid("setGridWidth",width,true);
+    $("#gbox_sqreamTableGrid").css({marginLeft:"auto",marginRight:"auto"});
+}
+
+function viewSqreamTableDetail(globalUuid){
+    $("#selectedSqreamTableUuid").text("Global UUID : "+globalUuid);
+    $("#sqreamTableDetailList").html('<div class="metrics-detail-empty">조회 중...</div>');
+    $("#sqreamTableDetailModal").addClass("on");
+
+    $.get(sqreamTableVars.baseUrl+"/"+encodeURIComponent(globalUuid),function(rows){
+        renderSqreamTableDetail(rows||[]);
+    }).fail(function(){
+        $("#sqreamTableDetailList").html('<div class="metrics-detail-empty">상세조회에 실패했습니다.</div>');
+    });
+}
+
+function renderSqreamTableDetail(rows){
+    if(!rows.length){
+        $("#sqreamTableDetailList").html('<div class="metrics-detail-empty">조회된 상세 데이터가 없습니다.</div>');
+        return;
+    }
+    var html="";
+    $.each(rows,function(i,r){
+        html+='<div class="metrics-detail-record">'+
+            '<div class="metrics-detail-record-title">'+
+                '<span class="record-no">#'+(i+1)+'</span>'+
+                '<span class="record-point">'+escapeHtml(r.fullTableName||r.tableName||"-")+'</span>'+
+            '</div>'+
+            '<table class="metrics-detail-table"><colgroup><col class="detail-label-col"><col></colgroup><tbody>'+
+            detailRow("ID",r.id)+
+            detailRow("Server ID",r.serverId)+
+            detailRow("Collect Time",formatSqDateTime(r.collectTime))+
+            detailRow("Hostname",r.hostname)+
+            detailRow("Host IP",r.hostip)+
+            detailRow("Global UUID",r.globalUuid)+
+            detailRow("Database Name",r.databaseName)+
+            detailRow("Table ID",raw(r.tableId))+
+            detailRow("Schema Name",r.schemaName)+
+            detailRow("Table Name",r.tableName)+
+            detailRow("Row Count Valid",raw(r.rowCountValid))+
+            detailRow("Row Count",raw(r.rowCount))+
+            detailRow("Rechunker Ignore",raw(r.rechunkerIgnore))+
+            detailRow("Deleted Row Count",raw(r.deletedRowCount))+
+            detailRow("Deleted Row Ratio",r.deletedRowRatio==null?"-":Number(r.deletedRowRatio).toFixed(2)+" %")+
+            detailRow("Is Row Consistent",boolText(r.rowConsistent))+
+            detailRow("Needs Rechunk",boolText(r.needsRechunk))+
+            detailRow("Comment",r.comment)+
+            detailRow("Full Table Name",r.fullTableName)+
+            detailRow("Create DT",formatSqDateTime(r.createDt))+
+            detailRow("Update DT",formatSqDateTime(r.updateDt))+
+            '</tbody></table></div>';
+    });
+    $("#sqreamTableDetailList").html(html);
+}
+
+function closeSqreamTableDetail(){$("#sqreamTableDetailModal").removeClass("on");}
+function detailRow(label,value){return '<tr><th>'+escapeHtml(label)+'</th><td><div class="metrics-detail-value-box">'+escapeHtml(value==null||value===""?"-":value)+'</div></td></tr>';}
+function formatSqDateTime(v){if(!v)return "";return String(v).replace("T"," ").substring(0,19);}
+function formatRawInteger(v){return v==null||v===""?"":String(v);}
+function raw(v){return v==null||v===""?"-":String(v);}
+function formatPlainNumber(v){return v==null||v===""?"":String(v);}
+function formatPercent2(v){if(v==null||v==="")return "";var n=Number(v);return isNaN(n)?v:n.toFixed(2)+" %";}
+function formatBoolean(v){if(v===true)return "Y";if(v===false)return "N";return "";}
+function boolText(v){if(v===true)return "true";if(v===false)return "false";return "-";}
+function escapeHtml(v){return $.jgrid.htmlEncode(v==null?"":String(v));}
+function escapeSqJs(v){return String(v==null?"":v).replace(/\\/g,"\\\\").replace(/'/g,"\\'");}
+// ===== 20260903 추가 끝 : Sqream Table jqGrid / 상세조회 =====
+// ===== 20260903 추가 시작 : 조회기간 normalizeDate 함수 =====
+function normalizeDate(value) {
+    if (!value) {
+        return "";
+    }
+
+    value = String(value).trim();
+
+    // yyyy-MM-dd HH:mm:ss 형태면 그대로 사용
+    if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value)) {
+        return value;
+    }
+
+    // yyyy-MM-dd HH:mm 형태면 초 추가
+    if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(value)) {
+        return value + ":00";
+    }
+
+    return value;
+}
+// ===== 20260903 추가 끝 : 조회기간 normalizeDate 함수 =====
+</script>
+<!-- ===== 20260903 추가 끝 : SQream Table 조회 화면 ===== -->

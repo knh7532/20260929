@@ -1,0 +1,319 @@
+<style type="text/css">
+    .content {
+        max-width: 1800px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .sqream-search .top { display:flex;align-items:flex-end;gap:38px;width:100%;flex-wrap:nowrap; }
+    .sqream-search .search-group { display:flex;flex-direction:column;justify-content:flex-end; }
+    .sqream-search .search-group>.tit { height:22px;line-height:22px;margin:0 0 8px 0 !important; }
+    .sqream-search .control-row { height:48px;display:flex;align-items:center; }
+    .sqream-search .datepicker_wrap { flex:0 0 465px;min-width:465px; }
+    .sqream-search .datepicker_wrap .input_box { display:flex;align-items:center;gap:10px;width:100% !important;height:48px;margin:0 !important; }
+    .sqream-search .datepicker_wrap input { width:220px !important;height:48px !important;box-sizing:border-box; }
+    .sqream-search .middle { flex:1 1 auto;min-width:360px;max-width:720px; }
+    .sqream-search .middle .input_box,.sqream-search .middle input { width:100% !important;height:48px;box-sizing:border-box;margin:0 !important; }
+    .sqream-search .btn_area {
+        display:flex;
+        align-items:center;
+        height:48px;
+        margin:0 0 0 -28px !important;
+        padding:0 !important;
+    }
+    .global-uuid-link { color:#0066cc !important;text-decoration:underline !important;cursor:pointer; }
+    #queryRuntimeGrid td { white-space:nowrap; }
+    #queryRuntimePager .ui-pg-table { width:auto !important;margin:0 auto !important; }
+    .sqream-detail .m_modal_container {
+        width:980px !important;
+        max-width:980px !important;
+        min-width:980px !important;
+        max-height:92vh !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+    .sqream-detail .m_modal_body {
+        max-height:calc(92vh - 70px);
+        overflow-y:auto;
+        box-sizing:border-box;
+    }
+    .sqream-detail-summary {
+        margin:0 0 14px 0;
+        padding:13px 15px !important;
+        border:1px solid #ddd;
+        border-radius:4px;
+        background:#fafafa;
+        font-size:15px !important;
+        color:#555;
+    }
+    .sqream-detail-record {
+        margin-bottom:18px;
+        border:1px solid #dcdcdc;
+        border-radius:4px;
+        overflow:hidden;
+        background:#fff;
+    }
+    .sqream-detail-table {
+        width:100%;
+        border-collapse:collapse;
+        table-layout:fixed;
+    }
+    .sqream-detail-table col.detail-label-col {
+        width:190px !important;
+    }
+    .sqream-detail-table th,
+    .sqream-detail-table td {
+        background:#fff;
+        color:#333;
+        word-break:break-all;
+        white-space:normal;
+    }
+    .sqream-detail-table th {
+        background:#f7f7fb;
+        color:#64718a;
+        font-weight:600;
+        text-align:center;
+    }
+    .sqream-detail-table td { background:#fff;color:#333;word-break:break-all;white-space:normal; }
+    .sqream-detail-value-box {
+        width:100%;
+        min-height:0 !important;
+        padding:0 !important;
+        border:0 !important;
+        border-radius:0 !important;
+        background:transparent !important;
+        box-sizing:border-box;
+        line-height:20px;
+        font-size:14px !important;
+        white-space:pre-wrap;
+    }
+
+    .sqream-detail .m_modal_header .tit {
+        font-size:22px !important;
+    }
+    .sqream-detail-table tr:last-child th,
+    .sqream-detail-table tr:last-child td {
+        border-bottom:0;
+    }
+
+
+    /* ===== 메인 조회 Grid 중앙 정렬: Metrics Process와 동일 ===== */
+    .query-runtime-grid-shell {
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box;
+    }
+
+    #gbox_queryRuntimeGrid {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    #gbox_queryRuntimeGrid .ui-jqgrid-htable th,
+    #gbox_queryRuntimeGrid .ui-jqgrid-htable th div {
+        text-align: center !important;
+    }
+
+    #queryRuntimePager {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    #queryRuntimePager .ui-pg-table {
+        width: auto !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+
+    /* ===== 20260902 추가 시작 : Worker Log와 동일한 Query Runtime 하단 Pager 스타일 ===== */
+    #queryRuntimePager {
+        width:100% !important; min-height:58px !important; position:relative !important; text-align:center !important;
+    }
+    #queryRuntimePager .ui-pager-table,
+    #queryRuntimePager .ui-pg-table {
+        width:auto !important; margin-left:auto !important; margin-right:auto !important;
+    }
+    #queryRuntimePager > .ui-pg-table,
+    #queryRuntimePager .ui-jqgrid-pager > .ui-pg-table {
+        width:auto !important; margin-left:auto !important; margin-right:auto !important;
+    }
+    #queryRuntimePager .ui-pg-table > tbody > tr {
+        display:flex !important; align-items:center !important; justify-content:center !important;
+        width:auto !important; gap:8px !important;
+    }
+    #queryRuntimePager_left,
+    #queryRuntimePager_center,
+    #queryRuntimePager_right,
+    #queryRuntimePager td[id$="_left"],
+    #queryRuntimePager td[id$="_center"],
+    #queryRuntimePager td[id$="_right"] {
+        position:static !important; left:auto !important; top:auto !important; right:auto !important;
+        transform:none !important; float:none !important; width:auto !important; min-width:0 !important;
+        padding:0 3px !important; display:flex !important; align-items:center !important;
+        justify-content:center !important; white-space:nowrap !important;
+    }
+    #queryRuntimePager_left .ui-pg-table,
+    #queryRuntimePager_center .ui-pg-table,
+    #queryRuntimePager_right .ui-pg-table {
+        width:auto !important; margin:0 !important;
+    }
+    #queryRuntimePager .ui-pg-button,
+    #queryRuntimePager .ui-paging-info,
+    #queryRuntimePager select,
+    #queryRuntimePager input { flex:0 0 auto !important; }
+    .ui-jqgrid #queryRuntimePager.ui-jqgrid-pager {
+        display:flex !important; align-items:center !important; justify-content:center !important;
+    }
+    #queryRuntimePager_center { text-align:center !important; }
+    /* ===== 20260902 추가 끝 : Worker Log와 동일한 Query Runtime 하단 Pager 스타일 ===== */
+
+</style>
+
+<div class="container"><div class="content trace">
+    <h2>SQream Query Runtime 조회</h2>
+    <div class="trace_search sqream-search"><div class="top">
+        <div class="datepicker_wrap search-group"><p class="tit">조회기간</p><div class="input_box control-row">
+            <input type="text" class="m_input datepicker date time" id="queryRuntimeSearchStart"/><span>-</span>
+            <input type="text" class="m_input datepicker date time" id="queryRuntimeSearchEnd"/></div></div>
+        <div class="middle search-group"><p class="tit">검색</p><div class="input_box control-row">
+            <input type="text" class="m_input" id="queryRuntimeSearchKeyword" placeholder="Global UUID / Server ID / Query Identifier / User Name / 상태"
+                   onkeydown="if(event.keyCode===13) searchQueryRuntime();"/></div></div>
+        <div class="btn_area"><button type="button" class="btn_red" style="border-radius:7px;width:62px" onclick="searchQueryRuntime();">검색</button></div>
+    </div></div>
+    <div class="width1 grid_wrap textleft query-runtime-grid-shell">
+        <table id="queryRuntimeGrid"></table><div id="queryRuntimePager"></div></div>
+</div></div>
+
+<div id="queryRuntimeDetailModal" class="m_modal sqream-detail"><div class="m_modal_container">
+    <div class="m_modal_header"><h2 class="tit">SQream Query Runtime 상세조회</h2><p class="m_modal_close" onclick="closeQueryRuntimeDetail();"></p></div>
+    <div class="m_modal_body"><div id="queryRuntimeDetailSummary" class="sqream-detail-summary"></div>
+        <div id="queryRuntimeDetailBody"></div><div class="modal_btn_area">
+            <button class="modal_btn_gray" onclick="closeQueryRuntimeDetail();" type="button">닫기</button></div></div>
+</div></div>
+
+<script>
+    "use strict";
+    var queryRuntimeVars={baseUrl:"/api/aisqreamboard/query_runtime",grid:$("#queryRuntimeGrid")};
+    $(function(){
+     var end=new Date(),start=new Date(); start.setHours(start.getHours()-1);
+     util.datetimePicker($("#queryRuntimeSearchStart"),start); util.datetimePicker($("#queryRuntimeSearchEnd"),end);
+     initQueryRuntimeGrid(); searchQueryRuntime();
+    });
+    function initQueryRuntimeGrid(){
+     util.jqGrid(queryRuntimeVars.grid,{datatype:"local",rownumbers:true,rownumWidth:32,
+     // ===== 20260901 수정 시작 : MetricsProcess와 동일한 메인 Grid 폭 설정 =====
+     shrinkToFit:true,autowidth:true,
+     // ===== 20260901 수정 끝 : MetricsProcess와 동일한 메인 Grid 폭 설정 =====
+     // ===== 20260902 수정 시작 : Query Runtime 메인 조회 컬럼 순서 변경 =====
+     colNames:["Global UUID","Hostname","Host IP","Query Start","Query End","Connection ID","Statement ID","User Name","Classified State","Duration","Compile Time","Compile Execution Time","Inqueue Time","Execution Time"],
+     colModel:[
+     {name:"globalUuid",width:220,align:"center",formatter:function(v,opt,row){if(!v)return "";return '<a class="global-uuid-link" onclick="viewQueryRuntimeDetail(\''+String(row.id).replace(/\'/g,"\'")+'\',\''+String(v).replace(/\'/g,"\'")+'\')">'+$.jgrid.htmlEncode(v)+"</a>";}},
+     {name:"hostname",width:135,align:"center"},
+     {name:"hostip",width:125,align:"center"},
+     {name:"queryStart",width:155,align:"center",formatter:formatSqDateTime},
+     {name:"queryEnd",width:155,align:"center",formatter:formatSqDateTime},
+     {name:"connectionId",width:115,align:"center",formatter:formatSqRawInteger},
+     {name:"statementId",width:115,align:"center",formatter:formatSqRawInteger},
+     {name:"userName",width:135,align:"center"},
+     {name:"classifiedState",width:135,align:"center"},
+     {name:"durationSeconds",width:130,align:"center",formatter:formatSqSeconds},
+     {name:"compileTimeSec",width:135,align:"center",formatter:formatSqSeconds},
+     {name:"compileExecutionTimeSec",width:165,align:"center",formatter:formatSqSeconds},
+     {name:"inqueueTimeSec",width:130,align:"center",formatter:formatSqSeconds},
+     {name:"executionTimeSec",width:130,align:"center",formatter:formatSqSeconds}
+     ],
+     // ===== 20260902 수정 끝 : Query Runtime 메인 조회 컬럼 순서 변경 =====
+     rowNum:20,rowList:[20,50,100,200],pager:"#queryRuntimePager"});
+    }
+    function searchQueryRuntime(){
+     var url=queryRuntimeVars.baseUrl+"?page=0&size=200";
+     var start=normalizeDate($("#queryRuntimeSearchStart").val()),end=normalizeDate($("#queryRuntimeSearchEnd").val()),keyword=$("#queryRuntimeSearchKeyword").val();
+     if(start) url+="&startTime="+encodeURIComponent(start); if(end) url+="&endTime="+encodeURIComponent(end); if(keyword) url+="&keyword="+encodeURIComponent(keyword);
+     $.get(url,function(data){
+      queryRuntimeVars.grid.clearGridData();
+      queryRuntimeVars.grid.setGridParam({data:data.content||[],datatype:"local"}).trigger("reloadGrid");
+      // ===== 20260901 추가 시작 : MetricsProcess와 동일하게 조회 후 Grid 폭 재조정 =====
+      centerQueryRuntimeGrid();
+      // ===== 20260901 추가 끝 : MetricsProcess와 동일하게 조회 후 Grid 폭 재조정 =====
+     })
+     .fail(function(){alert("SQream Query Runtime 조회에 실패했습니다.");});
+    }
+
+    // ===== 20260901 추가 시작 : MetricsProcess와 동일한 메인 Grid 폭 조정 함수 =====
+    function centerQueryRuntimeGrid(){
+     var $wrap=$(".query-runtime-grid-shell");
+     var width=$wrap.width();
+     if(width && queryRuntimeVars.grid[0] && queryRuntimeVars.grid[0].grid){
+      queryRuntimeVars.grid.jqGrid("setGridWidth",width,true);
+     }
+    }
+    // ===== 20260901 추가 끝 : MetricsProcess와 동일한 메인 Grid 폭 조정 함수 =====
+    function viewQueryRuntimeDetail(id,globalUuid){
+     $.get(queryRuntimeVars.baseUrl+"/"+encodeURIComponent(id),function(row){
+      $("#queryRuntimeDetailSummary").text("Global UUID: "+(globalUuid||row.globalUuid||"-"));
+      renderQueryRuntimeDetail(row||{});$("#queryRuntimeDetailModal").addClass("on");$("body").css("overflow","hidden");
+     }).fail(function(){alert("상세 조회에 실패했습니다.");});
+    }
+    function renderQueryRuntimeDetail(row){
+     var html='<div class="sqream-detail-record"><table class="sqream-detail-table"><colgroup><col class="detail-label-col"><col></colgroup><tbody>';
+     html+=sqDetailRow("Server ID",row.serverId);
+     html+=sqDetailRow("Hostname",row.hostname);
+     html+=sqDetailRow("Host IP",row.hostip);
+     html+=sqDetailRow("수집시간",formatSqDateTime(row.collectTime));
+     // ===== 20260902 수정 시작 : Connection ID 천단위 콤마 제거 =====
+      html+=sqDetailRow("Connection ID",formatSqRawInteger(row.connectionId));
+      // ===== 20260902 수정 끝 : Connection ID 천단위 콤마 제거 =====
+     // ===== 20260902 수정 시작 : Statement ID 천단위 콤마 제거 =====
+      html+=sqDetailRow("Statement ID",formatSqRawInteger(row.statementId));
+      // ===== 20260902 수정 끝 : Statement ID 천단위 콤마 제거 =====
+     html+=sqDetailRow("Query Identifier",row.queryIdentifier);
+     html+=sqDetailRow("User Name",row.userName);
+     html+=sqDetailRow("Query Start",formatSqDateTime(row.queryStart));
+     html+=sqDetailRow("Query End",formatSqDateTime(row.queryEnd));
+     html+=sqDetailRow("Compile Time",formatSqSeconds(row.compileTimeSec));
+     html+=sqDetailRow("Compile Execution Time",formatSqSeconds(row.compileExecutionTimeSec));
+     html+=sqDetailRow("Inqueue Time",formatSqSeconds(row.inqueueTimeSec));
+     html+=sqDetailRow("Execution Time",formatSqSeconds(row.executionTimeSec));
+     html+=sqDetailRow("Idle Connection Time",formatSqSeconds(row.idleConnTimeSec));
+     html+=sqDetailRow("Total Runtime",formatSqSeconds(row.totalRuntimeSec));
+     html+=sqDetailRow("Compile Time(ms)",formatSqMs(row.compileTimeMs));
+     html+=sqDetailRow("Execute Time(ms)",formatSqMs(row.executeTimeMs));
+     html+=sqDetailRow("Wait Time(ms)",formatSqMs(row.waitTimeMs));
+     html+=sqDetailRow("Total Runtime(ms)",formatSqMs(row.totalRuntimeMs));
+     html+=sqDetailRow("Duration(ms)",formatSqMs(row.durationMillis));
+     html+=sqDetailRow("Elapsed Since Start",formatSqSeconds(row.elapsedSecondsSinceStart));
+     html+=sqDetailRow("Duration",formatSqSeconds(row.durationSeconds));
+     html+=sqDetailRow("Classified State",row.classifiedState);
+     html+=sqDetailRow("Performance Grade",row.performanceGrade);
+     html+=sqDetailRow("Bottleneck Stage",row.bottleneckStage);
+     html+=sqDetailRow("Bottleneck Time",formatSqSeconds(row.bottleneckTimeSec));
+     html+=sqDetailRow("Bottleneck Ratio",row.bottleneckRatio);
+     html+=sqDetailRow("Efficiency Score",formatSqNumber(row.efficiencyScore));
+     html+=sqDetailRow("Compile Ratio",row.compileRatio);
+     html+=sqDetailRow("Execution Ratio",row.executionRatio);
+     html+=sqDetailRow("Inqueue Ratio",row.inqueueRatio);
+     html+=sqDetailRow("Idle Ratio",row.idleRatio);
+     html+=sqDetailRow("Overhead Ratio",row.overheadRatio);
+     html+=sqDetailRow("System Query",formatSqBool(row.isSystemQuery));
+     html+=sqDetailRow("User Query",formatSqBool(row.isUserQuery));
+     html+=sqDetailRow("Long Running",formatSqBool(row.isLongRunning));
+     html+=sqDetailRow("Create DT",formatSqDateTime(row.createDt));
+     html+=sqDetailRow("Update DT",formatSqDateTime(row.updateDt));
+     html+='</tbody></table></div>'; $("#queryRuntimeDetailBody").html(html);
+    }
+    function closeQueryRuntimeDetail(){ $("#queryRuntimeDetailModal").removeClass("on");$("body").css("overflow","auto"); }
+    function sqDetailRow(label,value){var v=(value===null||value===undefined||value==="")?"-":String(value);return '<tr><th>'+$.jgrid.htmlEncode(label)+'</th><td><div class="sqream-detail-value-box">'+$.jgrid.htmlEncode(v)+'</div></td></tr>';}
+    function formatSqDateTime(v) {
+      if (!v) return "";
+      var value = String(v).replace("T", " ");
+      return value.substring(0, 19);
+    }
+    function formatSqSeconds(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);if(isNaN(n))return v;var d=Math.floor(n/86400);n-=d*86400;var h=Math.floor(n/3600);n-=h*3600;var m=Math.floor(n/60);n-=m*60;var s=Math.round(n*1000)/1000;var a=[];if(d)a.push(d+"일");if(h||d)a.push(h+"시간");if(m||h||d)a.push(m+"분");a.push(s+"초");return a.join(" ");}
+    function formatSqBytesGB(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);if(isNaN(n))return v;return (n/1024/1024/1024).toFixed(2)+" GB";}
+    function formatSqMs(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);return isNaN(n)?v:n.toLocaleString()+" ms";}
+    function formatSqRawInteger(v){if(v===null||v===undefined||v==="")return "";return String(v);}
+    function formatSqNumber(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);return isNaN(n)?v:n.toLocaleString();}
+    function formatSqBool(v){if(v===true)return "Y";if(v===false)return "N";return "";}
+    function normalizeDate(v){if(!v)return "";return String(v).trim().replace("T"," ");}
+</script>

@@ -1,0 +1,88 @@
+<style type="text/css">
+/* ===== 20260909 추가 시작 : MetricsNode와 동일한 화면 크기/스타일 ===== */
+.content{max-width:1800px!important;margin-left:auto!important;margin-right:auto!important}
+.cluster-search .top{display:flex;align-items:flex-end;justify-content:flex-start;gap:18px;flex-wrap:nowrap}
+.cluster-search .search-group{display:flex;flex-direction:column;justify-content:flex-end}
+.cluster-search .tit{height:22px;line-height:22px;margin:0 0 8px 0!important;font-size:12px;font-weight:600;color:#555;white-space:nowrap}
+.cluster-search .period{flex:0 0 465px;min-width:465px}
+.cluster-search .period .input_box{display:flex;flex-direction:row;align-items:center;width:100%!important;height:48px;gap:10px;margin:0!important}
+.cluster-search .period input{width:220px!important;height:48px!important;box-sizing:border-box}
+.cluster-search .field{min-width:120px;gap:5px}
+.cluster-search .field input{width:205px!important;height:38px!important;box-sizing:border-box}
+.cluster-search .btn_area{display:flex;align-items:center;gap:12px;flex:0 0 auto;width:auto!important;height:38px;padding:0!important;margin:0!important}
+.cluster-search .btn_area button{height:38px}
+.cluster-grid-shell{width:100%!important;margin:0 auto!important;box-sizing:border-box;overflow-x:auto}
+.cluster-key-link{color:#0066cc!important;text-decoration:underline!important;cursor:pointer}
+#gbox_clusterGrid{margin-left:auto!important;margin-right:auto!important}
+#gbox_clusterGrid .ui-jqgrid-htable th,#gbox_clusterGrid .ui-jqgrid-htable th div{text-align:center!important}
+#clusterPager{width:100%!important;min-height:58px!important;position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+#clusterPager .ui-pg-table{width:auto!important;margin:0 auto!important}
+#clusterPager .ui-pg-table>tbody>tr{display:flex!important;align-items:center!important;justify-content:center!important;width:auto!important;gap:8px!important}
+#clusterPager_left,#clusterPager_center,#clusterPager_right,#clusterPager td[id$="_left"],#clusterPager td[id$="_center"],#clusterPager td[id$="_right"]{position:static!important;left:auto!important;top:auto!important;right:auto!important;transform:none!important;float:none!important;width:auto!important;min-width:0!important;padding:0 3px!important;display:flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important}
+.cluster-detail .m_modal_container{width:980px!important;max-width:980px!important;min-width:980px!important;max-height:92vh!important;margin:auto!important}
+.cluster-detail .m_modal_body{max-height:calc(92vh - 70px);overflow-y:auto;box-sizing:border-box}
+.cluster-detail-summary{margin:0 0 14px 0;padding:13px 15px;border:1px solid #ddd;border-radius:4px;background:#fafafa;font-size:15px;color:#555}
+.cluster-detail-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.cluster-detail-table th,.cluster-detail-table td{border-bottom:1px solid #e4e4e4;padding:12px 14px;font-size:14px;vertical-align:middle;box-sizing:border-box}
+.cluster-detail-table th{width:190px;background:#f7f7fb;color:#64718a;font-weight:600;text-align:center}
+.cluster-detail-table td{background:#fff;color:#333;word-break:break-all;white-space:normal}
+/* ===== 20260909 추가 끝 ===== */
+</style>
+
+<div class="container">
+    <div class="content trace">
+        <h2>AI SQream Cluster Nodes 조회</h2>
+        <div class="trace_search cluster-search">
+            <div class="top">
+                <div class="search-group period">
+                    <p class="tit">조회기간</p>
+                    <div class="input_box">
+                        <input type="text" class="m_input datepicker date time" id="clusterRangeStart"/>
+                        <span>-</span>
+                        <input type="text" class="m_input datepicker date time" id="clusterRangeEnd"/>
+                    </div>
+                </div>
+                <div class="search-group field">
+                    <p class="tit">검색</p>
+                    <input type="text" class="m_input" id="clusterKeyword" placeholder="Hostname / Instance ID / Global UUID" onkeydown="if(event.keyCode===13) searchCluster();"/>
+                </div>
+                <div class="btn_area">
+                    <button type="button" class="btn_red" style="border-radius:7px;width:62px" onclick="searchCluster();">검색</button>
+                </div>
+            </div>
+        </div>
+        <div class="width1 grid_wrap textleft cluster-grid-shell">
+            <table id="clusterGrid"></table>
+            <div id="clusterPager"></div>
+        </div>
+    </div>
+</div>
+
+<div id="clusterDetailModal" class="m_modal cluster-detail">
+    <div class="m_modal_container">
+        <div class="m_modal_header"><h2 class="tit">Cluster Node 상세조회</h2><p class="m_modal_close" onclick="closeClusterDetail();"></p></div>
+        <div class="m_modal_body">
+            <div id="clusterDetailSummary" class="cluster-detail-summary"></div>
+            <div id="clusterDetailList"></div>
+            <div class="modal_btn_area"><button class="modal_btn_gray" onclick="closeClusterDetail();" type="button">닫기</button></div>
+        </div>
+    </div>
+</div>
+
+<script>
+"use strict";
+// ===== 20260909 추가 : MetricsNode와 동일한 jqGrid/조회기간 구조 =====
+var clusterVars={baseUrl:"/api/aisqreamboard/cluster-nodes",grid:$("#clusterGrid")};
+$(function(){initClusterDate();initClusterGrid();searchCluster();$(window).on("resize",resizeClusterGrid);});
+function initClusterDate(){var end=new Date(),start=new Date();start.setHours(start.getHours()-1);util.datetimePicker($("#clusterRangeStart"),start);util.datetimePicker($("#clusterRangeEnd"),end);}
+function initClusterGrid(){util.jqGrid(clusterVars.grid,{datatype:"local",rownumbers:true,rownumWidth:32,shrinkToFit:true,autowidth:true,colNames:["Global UUID","수집시간","Server ID","Hostname","Host IP","Server IP","Server Port","Connection ID","Instance ID","Last Heartbeat","Connection Status"],colModel:[{name:"globalUuid",width:230,align:"center",formatter:function(v){if(!v)return "";return '<a class="cluster-key-link" onclick="viewClusterDetail(\''+escapeClusterJs(v)+'\')">'+$.jgrid.htmlEncode(v)+'</a>'; }},{name:"collectTime",width:155,align:"center",formatter:formatClusterDateTime},{name:"serverId",width:120,align:"center"},{name:"hostname",width:145,align:"center"},{name:"hostip",width:125,align:"center"},{name:"serverIp",width:125,align:"center"},{name:"serverPort",width:95,align:"center"},{name:"connectionId",width:110,align:"center"},{name:"instanceId",width:120,align:"center"},{name:"lastHeartbeat",width:120,align:"center",formatter:formatClusterInteger},{name:"connectionStatus",width:135,align:"center"}],rowNum:20,rowList:[20,50,100,200],pager:"#clusterPager"});}
+function searchCluster(){var u=clusterVars.baseUrl+"?page=0&size=200";var s=normalizeClusterDate($("#clusterRangeStart").val()),e=normalizeClusterDate($("#clusterRangeEnd").val()),k=$.trim($("#clusterKeyword").val());if(s)u+="&startTime="+encodeURIComponent(s);if(e)u+="&endTime="+encodeURIComponent(e);if(k)u+="&keyword="+encodeURIComponent(k);$.get(u,function(d){clusterVars.grid.clearGridData().setGridParam({data:d.content||[],datatype:"local"}).trigger("reloadGrid");resizeClusterGrid();}).fail(function(){alert("Cluster Nodes 조회에 실패했습니다.");});}
+function resizeClusterGrid(){var w=$(".cluster-grid-shell").width();if(w&&clusterVars.grid[0]&&clusterVars.grid[0].grid)clusterVars.grid.jqGrid("setGridWidth",w,false);}
+function viewClusterDetail(uuid){if(!uuid)return;$.get(clusterVars.baseUrl+"/"+encodeURIComponent(uuid),function(rows){$("#clusterDetailSummary").text("Global UUID: "+uuid);renderClusterDetail(rows||[]);$("#clusterDetailModal").addClass("on");$("body").css("overflow","hidden");}).fail(function(){alert("Cluster Node 상세 조회에 실패했습니다.");});}
+function renderClusterDetail(rows){var $x=$("#clusterDetailList").empty();if(!rows.length){$x.html('<div style="text-align:center;padding:35px">조회된 상세 데이터가 없습니다.</div>');return;}var r=rows[0];var fields=[{f:"globalUuid",l:"Global UUID"},{f:"collectTime",l:"Collect Time"},{f:"serverId",l:"Server ID"},{f:"hostname",l:"Hostname"},{f:"hostip",l:"Host IP"},{f:"serverIp",l:"Server IP"},{f:"serverPort",l:"Server Port"},{f:"connectionId",l:"Connection ID"},{f:"instanceId",l:"Instance ID"},{f:"lastHeartbeat",l:"Last Heartbeat"},{f:"connectionStatus",l:"Connection Status"},{f:"createDt",l:"Create DT"},{f:"updateDt",l:"Update DT"}];var h='<table class="cluster-detail-table"><tbody>';for(var i=0;i<fields.length;i++){var v=r[fields[i].f];if(["collectTime","createDt","updateDt"].indexOf(fields[i].f)>=0)v=formatClusterDateTime(v);else if(fields[i].f==="lastHeartbeat")v=formatClusterInteger(v);h+='<tr><th>'+fields[i].l+'</th><td>'+$.jgrid.htmlEncode(v==null?"":String(v))+'</td></tr>';}h+='</tbody></table>';$x.html(h);}
+function closeClusterDetail(){$("#clusterDetailModal").removeClass("on");$("body").css("overflow","auto");}
+function formatClusterDateTime(v){if(v===null||v===undefined||v==="")return "";return String(v).replace("T"," ").replace(/(\.\d+)(?=$|Z|[+-]\d\d:?\d\d$)/,"").replace(/Z$/,"");}
+function formatClusterInteger(v){if(v===null||v===undefined||v==="")return "";var n=Number(v);return isFinite(n)?Math.trunc(n).toLocaleString("en-US"):v;}
+function normalizeClusterDate(v){return v?String(v).replace("T"," "):"";}
+function escapeClusterJs(v){return String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'");}
+</script>
